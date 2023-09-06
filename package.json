@@ -1,11 +1,11 @@
 {
-    "name": "dlist.js",
-    "description": "An typescript API wrapper for the discordlist.gg api.",
+    "name": "lunify.js",
+    "description": "A basic api wrapper for the spotify api covering the oauth routes.",
     "version": "0.0.1",
     "main": "dist/src/lib/index.js",
     "types": "dist/src/lib/index.d.js",
     "files": [
-        "/dist"
+        "/dist/src"
     ],
     "license": "GPL-3.0 license",
     "author": "Luna <luna@waya.one> (http://lunish.nl/luna/)",
