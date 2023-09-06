@@ -1,7 +1,7 @@
 {
     "name": "dlist.js",
     "description": "An typescript API wrapper for the discordlist.gg api.",
-    "version": "0.5.0",
+    "version": "0.0.1",
     "main": "dist/src/lib/index.js",
     "types": "dist/src/lib/index.d.js",
     "files": [
