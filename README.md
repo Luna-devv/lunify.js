@@ -26,10 +26,7 @@ yarn add lunify.js
 ```ts
 import fastify from 'fastify';
 
-import Lunify from '../src/lib'; // fix path
-import { Scopes } from '../src/interfaces/oauth'; // fix path
-import { OauthTokenManager } from '../src/lib/oauth/TokenManager'; // fix path
-import { UserManager } from '../src/lib/user'; // fix path
+import { Lunify, OauthTokenManager, UserManager, Scopes } from 'lunify.js';
 
 const app = fastify();
 const api = new Lunify({
