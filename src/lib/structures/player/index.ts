@@ -1,18 +1,18 @@
-import { Lunify } from '..';
-import { UserManager } from '../user';
-import { PlayerDevicesManager } from './DevicesManager';
+import { Lunify } from '../..';
+import { User } from '../user';
+import { PlayerDevices } from './Devices';
 
-export * from './DeviceManager';
-export * from './DevicesManager';
+export * from './Device';
+export * from './Devices';
 
-export class PlayerManager {
-    public devices: PlayerDevicesManager;
+export class Player {
+    public devices: PlayerDevices;
 
     constructor(
         public client: Lunify,
-        public user: UserManager,
+        public user: User,
     ) {
-        this.devices = new PlayerDevicesManager(this.client, this);
+        this.devices = new PlayerDevices(this.client, this);
     }
 
     /**

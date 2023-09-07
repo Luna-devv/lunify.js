@@ -1,10 +1,8 @@
-import { Options, RequestDomain } from '../../interfaces/rest';
+import { Options, RequestDomain } from '../../../interfaces/rest';
 import { EventEmitter } from 'stream';
-import { ApiTokenResponse } from '../../interfaces/oauth';
-import { Lunify, Scopes } from '..';
-import { OauthTokenManager } from './TokenManager';
-
-export * from './TokenManager';
+import { ApiTokenResponse } from '../../../interfaces/oauth';
+import { Lunify, Scopes } from '../..';
+import { UserOauth } from '../../structures/user';
 
 export class OauthManager extends EventEmitter {
     private options: Options['oAuth'];
@@ -51,7 +49,7 @@ export class OauthManager extends EventEmitter {
         });
         res.created_timestamp = Date.now();
 
-        return new OauthTokenManager(this.client, res);
+        return new UserOauth(this.client, res);
     }
 
     /**
@@ -74,7 +72,7 @@ export class OauthManager extends EventEmitter {
         });
         res.created_timestamp = Date.now();
 
-        return new OauthTokenManager(this.client, res);
+        return new UserOauth(this.client, res);
     }
 
 }

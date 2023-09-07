@@ -1,26 +1,26 @@
-import { Lunify } from '..';
-import { PlayerManager } from '.';
-import { ApiGetDevice } from '../../interfaces/player';
-import { PlayerDeviceManager } from './DeviceManager';
+import { Lunify } from '../..';
+import { Player } from '.';
+import { ApiDevice } from '../../../interfaces/player';
+import { PlayerDevice } from './Device';
 
-export class PlayerDevicesManager {
+export class PlayerDevices {
 
     constructor(
         public client: Lunify,
-        private player: PlayerManager,
+        private player: Player,
     ) { }
 
     async fetch() {
 
-        const res = await this.client.rest.get<{ devices: ApiGetDevice[] }>('/me/player/devices', {
+        const res = await this.client.rest.get<{ devices: ApiDevice[] }>('/me/player/devices', {
             headers: {
                 Authorization: this.player.user.oauth.getAuthorization()
             }
         });
 
-        const devices: PlayerDeviceManager[] = [];
+        const devices: PlayerDevice[] = [];
 
-        for (const apiDevice of res.devices) devices.push(new PlayerDeviceManager(this.client, this.player.user, apiDevice));
+        for (const apiDevice of res.devices) devices.push(new PlayerDevice(this.client, this.player.user, apiDevice));
 
         return devices;
     }

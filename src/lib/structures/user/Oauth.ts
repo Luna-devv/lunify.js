@@ -1,7 +1,7 @@
-import { Lunify } from '..';
-import { ApiRefreshTokenResponse, ApiTokenResponse } from '../../interfaces/oauth';
+import { Lunify } from '../..';
+import { ApiRefreshTokenResponse, ApiTokenResponse } from '../../../interfaces/oauth';
 
-export class OauthTokenManager {
+export class UserOauth {
     public accessToken: string;
     public refreshToken: string;
     public tokenType: string;
@@ -41,6 +41,16 @@ export class OauthTokenManager {
      */
     getAuthorization() {
         return this.tokenType + ' ' + this.accessToken;
+    }
+
+    /**
+     * Fetch the user accociated with this access token
+     * @example ```ts
+     * const user = await access.fetchUser();
+     * ```
+     */
+    async fetchUser() {
+        return await this.client.users.fetch(this);
     }
 
 }

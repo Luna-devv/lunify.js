@@ -1,5 +1,5 @@
-import { Lunify } from '..';
-import { InternalRequest, RequestData, RequestDomain, RequestMethod, ResponseLike, RouteLike } from '../../interfaces/rest';
+import { Lunify } from '../..';
+import { InternalRequest, RequestData, RequestDomain, RequestMethod, ResponseLike, RouteLike } from '../../../interfaces/rest';
 
 export class RestManager {
 

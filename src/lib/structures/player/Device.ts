@@ -1,8 +1,8 @@
-import { Lunify } from '..';
-import { ApiGetDevice } from '../../interfaces/player';
-import { UserManager } from '../user';
+import { Lunify } from '../..';
+import { ApiDevice } from '../../../interfaces/player';
+import { User } from '../user';
 
-export class PlayerDeviceManager {
+export class PlayerDevice {
     public id?: string;
     public active: boolean;
     public privateSession: boolean;
@@ -14,8 +14,8 @@ export class PlayerDeviceManager {
 
     constructor(
         public client: Lunify,
-        public user: UserManager,
-        data: ApiGetDevice
+        public user: User,
+        data: ApiDevice
     ) {
         this.id = data.id;
         this.active = data.is_active;

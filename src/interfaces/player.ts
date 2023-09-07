@@ -1,4 +1,6 @@
-export interface ApiGetDevice {
+import { ApiImage } from './user';
+
+export interface ApiDevice {
     id?: string;
     is_active: boolean;
     is_private_session: boolean;
@@ -10,7 +12,7 @@ export interface ApiGetDevice {
 }
 
 export interface ApiPlaybackState {
-    device: ApiGetDevice;
+    device: ApiDevice;
     repeat_state: 'off' | 'track' | 'context';
     shuffle_state: boolean;
     context?: {
@@ -148,10 +150,4 @@ export interface ApiArtist {
     popularity: number
     type: 'artist'
     uri: string
-}
-
-export interface ApiImage {
-    url: string;
-    height: number;
-    width: number;
 }
