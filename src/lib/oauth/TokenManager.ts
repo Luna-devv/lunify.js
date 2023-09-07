@@ -1,4 +1,4 @@
-import Lunify from '..';
+import { Lunify } from '..';
 import { ApiRefreshTokenResponse, ApiTokenResponse } from '../../interfaces/oauth';
 
 export class OauthTokenManager {

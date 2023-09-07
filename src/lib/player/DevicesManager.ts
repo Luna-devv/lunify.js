@@ -1,4 +1,4 @@
-import Lunify from '..';
+import { Lunify } from '..';
 import { PlayerManager } from '.';
 import { ApiGetDevice } from '../../interfaces/player';
 import { PlayerDeviceManager } from './DeviceManager';

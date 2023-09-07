@@ -1,6 +1,9 @@
-import Lunify from '..';
+import { Lunify } from '..';
 import { UserManager } from '../user';
 import { PlayerDevicesManager } from './DevicesManager';
+
+export * from './DeviceManager';
+export * from './DevicesManager';
 
 export class PlayerManager {
     public devices: PlayerDevicesManager;

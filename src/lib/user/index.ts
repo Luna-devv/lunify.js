@@ -1,4 +1,4 @@
-import Lunify from '..';
+import { Lunify } from '..';
 import { OauthTokenManager } from '../oauth/TokenManager';
 import { PlayerManager } from '../player';
 

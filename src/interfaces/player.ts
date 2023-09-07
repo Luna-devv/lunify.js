@@ -38,7 +38,7 @@ export interface ApiPlaybackState {
     };
 }
 
-interface ApiTrack {
+export interface ApiTrack {
     album: ApiAlbum;
     artists: ApiArtist[];
     available_markets: string[];
@@ -62,7 +62,7 @@ interface ApiTrack {
     is_local: boolean;
 }
 
-interface ApiEpisode {
+export interface ApiEpisode {
     audio_preview_url: string | null;
     description: string;
     html_description: string;

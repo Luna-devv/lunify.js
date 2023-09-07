@@ -1,8 +1,10 @@
 import { Options, RequestDomain } from '../../interfaces/rest';
 import { EventEmitter } from 'stream';
-import { ApiTokenResponse, Scopes } from '../../interfaces/oauth';
-import Lunify from '..';
+import { ApiTokenResponse } from '../../interfaces/oauth';
+import { Lunify, Scopes } from '..';
 import { OauthTokenManager } from './TokenManager';
+
+export * from './TokenManager';
 
 export class OauthManager extends EventEmitter {
     private options: Options['oAuth'];

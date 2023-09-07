@@ -2,7 +2,7 @@ import { Options } from '../interfaces/rest';
 import { OauthManager } from './oauth';
 import { RestManager } from './rest';
 
-export default class Lunify {
+export class Lunify {
     public rest: RestManager;
     public oauth: OauthManager;
 
@@ -12,3 +12,9 @@ export default class Lunify {
     }
 
 }
+
+export * from './oauth';
+export * from './player';
+export * from './rest';
+export * from './user';
+export * from './Constants';
