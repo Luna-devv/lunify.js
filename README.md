@@ -26,7 +26,7 @@ yarn add lunify.js
 ## Example
 ```ts
 import fastify from 'fastify';
-import { Lunify, OauthTokenManager, UserManager, Scopes } from 'lunify.js';
+import { Lunify, UserOauth, User, Scopes } from 'lunify.js';
 
 const app = fastify();
 const api = new Lunify({
@@ -46,7 +46,7 @@ app.get('/login', (req, res) => {
     res.redirect(url);
 });
 
-let access: OauthTokenManager | undefined;
+let access: UserOauth | undefined;
 
 // GET http://10.0.0.50:7654/callback
 app.get('/callback', async (req, res) => {
@@ -67,7 +67,7 @@ app.put('/play', (req, res) => {
     const track = (req.query as Record<string, string>).track?.split('/track/')?.[1]?.split("?")[0];
     if (!track) return 'INVALID_TRACK';
 
-    const user = new UserManager(api, access);
+    const user = new User(api, access);
     user.player.play(track);
 
     return 'OK';
