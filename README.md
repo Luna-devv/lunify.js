@@ -10,8 +10,6 @@ This is an unofficial [spotify](https://developer.spotify.com) package written f
 
 If you need help using this package, join **[our Discord Server](https://discord.com/invite/yYd6YKHQZH)**.
 
-All examples are written for **TypeScript**, if you use **JavaScript** please use the commonJS import method.
-
 ## Install
 Download this [npm package](https://www.npmjs.com/package/lunify.js) to use in your project with the following commands:
 
@@ -23,24 +21,86 @@ npm install lunify.js
 yarn add lunify.js
 ```
 
-## Example
-```ts
-import fastify from 'fastify';
-import { Lunify, UserOauth, User, Scopes } from 'lunify.js';
+## Quick documentation
 
-const app = fastify();
+All examples are written for **TypeScript**, if you use **JavaScript** please use the commonJS import method. Please note that every update could contain breaking changes during 0.x.x phase.
+
+### Initiate lunify.js
+This is essential for everything you want to do with this package, get your client id and client secrent from [the spotify developers dashboard](https://developer.spotify.com/dashboard), don't forget to keep the secret a secret :)
+```ts
+import { Lunify } from 'lunify.js';
+
 const api = new Lunify({
-    clientId: '',
-    clientSecret: '',
+    clientId: '898e127e95f24f578fdbfec93ae203cd',
+    clientSecret: 'dc302ea39cefbdf875f42f59e721e898',
+
+    // If you want to use oauth
     oauth: {
         redirectUri: 'http://10.0.0.50:7654/callback'
     }
 });
+```
 
-// only needed if you want to fetch non oauth things like tracks, albumbs and artists
+If you want access to not oauth related routes like tracks, you need to fetch client credentials like bellow, we recommend having that in the root of your project.
+```ts
 api.fetchCredentials();
+```
 
-// GET http://10.0.0.50:7654/login
+### Oauth (login with spotify)
+You can generate a url for users to login like shown bellow, [learn more about for what you need scopes here](https://developer.spotify.com/documentation/web-api/concepts/scopes), if you are unsure what scopes you need for what, use the [spotify docs references](https://developer.spotify.com/documentation).
+```ts
+const url = api.oauth.generateUrl([Scopes.Streaming, Scopes.UserModifyPlaybackState, Scopes.UserReadPlaybackState]);
+```
+From the callback urls query params you get a `code` with is used to fetch users access token from spotify.
+```ts
+const access = await api.oauth.fetchToken(code);
+```
+If you want to just play music or do other things with a user's player, you can create a [PartialUser](https://github.com/Luna-devv/lunify.js/blob/master/src/lib/structures/user/index.ts#L8) like that:
+```ts
+const user = new PartialUser(api, access);
+user.player.play("4cOdK2wGLETKBW3PvgPWqT");
+```
+If you want to access to user's data you can just get it from the previously gotten access class
+```ts
+const user = await access.fetchUser();
+user.player.play("4cOdK2wGLETKBW3PvgPWqT");
+
+console.log(user.displayName)
+```
+
+### Getting tracks
+
+**If you haven't already**, you should put this at the root of your project to fetch your client's credentials.
+```ts
+api.fetchCredentials();
+```
+
+Getting a single track, note that all fetched data gets cached until a restart to not spam the api as much
+```ts
+const track = await api.tracks.fetch("4cOdK2wGLETKBW3PvgPWqT");
+
+// or if you want to skip the cache
+
+const track = await api.tracks.fetch("4cOdK2wGLETKBW3PvgPWqT", { force: true });
+```
+
+## Example
+
+```ts
+import fastify from 'fastify';
+import { Lunify, UserOauth, Scopes, PartialUser } from '../src/lib';
+
+const app = fastify();
+const api = new Lunify({
+    clientId: '898e127e95f24f578fdbfec93ae203cd',
+    clientSecret: '6360a2220218448a85428353dbe65c4b',
+    oauth: {
+        redirectUri: 'http://localhost:3000/callback'
+    }
+});
+
+// Login and authorize this app to access your spotify account
+// GET http://localhost:3000/login
 app.get('/login', (req, res) => {
     const url = api.oauth.generateUrl([Scopes.Streaming, Scopes.UserModifyPlaybackState, Scopes.UserReadPlaybackState]);
     res.redirect(url);
@@ -48,7 +108,8 @@ app.get('/login', (req, res) => {
 
 let access: UserOauth | undefined;
 
-// GET http://10.0.0.50:7654/callback
+// Callback to get your authorization code and fetch your user credentials (NOT spotify login credentials)
+// GET http://localhost:3000/callback
 app.get('/callback', async (req, res) => {
     const code = (req.query as Record<string, string>).code || null;
     const state = (req.query as Record<string, string>).state || null;
@@ -62,19 +123,32 @@ app.get('/callback', async (req, res) => {
     return 'OK';
 });
 
-// PUT http://10.0.0.50:7654/play?track=https://open.spotify.com/track/0ZVjgfaC2Ptrod9v6p9KFP
+// Play a track on your current device, provide a track as query param (don't forget to remove all of spotifies tracking queries from their links)
+// PUT http://localhost:3000/play?track=https://open.spotify.com/track/0ZVjgfaC2Ptrod9v6p9KFP
 app.put('/play', (req, res) => {
     const track = (req.query as Record<string, string>).track?.split('/track/')?.[1]?.split("?")[0];
     if (!track) return 'INVALID_TRACK';
 
-    const user = new User(api, access);
+    // We use PartialUser so we do not have to fetch user data to use it's player
+    const user = new PartialUser(api, access);
     user.player.play(track);
 
     return 'OK';
 });
 
-// GET http://10.0.0.50:7654/track?track=https://open.spotify.com/track/0ZVjgfaC2Ptrod9v6p9KFP
-// needs "api.fetchCredentials();" anywhere in your project
+// Get your user data
+// GET http://localhost:3000/me
+app.get('/me', (req, res) => {
+    const user = await access.fetchUser();
+
+    console.log(user);
+
+    return res.send('OK');
+});
+
+// Fetch a track, provide a track as query param (don't forget to remove all of spotifies tracking queries from their links) 
+// GET http://localhost:3000/track?track=https://open.spotify.com/track/0ZVjgfaC2Ptrod9v6p9KFP
+// needs "api.fetchCredentials();" in the root of your project
 app.get('/track', (req, res) => {
     const track = (req.query as Record<string, string>).track?.split('/track/')?.[1]?.split("?")[0];
     if (!track) return 'INVALID_TRACK';
@@ -85,7 +159,8 @@ app.get('/track', (req, res) => {
     return 'OK';
 });
 
-app.listen({ host: '10.0.0.50', port: 7654 }, (err, address) => {
+// Let the webserver listen to that port
+app.listen({ host: 'localhost', port: 3000 }, (err, address) => {
     if (err) console.log(err);
     console.log(`Listening to ${address}`);
 });
