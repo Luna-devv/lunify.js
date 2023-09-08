@@ -50,7 +50,6 @@ export class Lunify {
         this.ready = true;
 
         this.credentials = new ClientCredentials(this, res);
-        console.log(this.credentials);
         return this.credentials;
     }
 
