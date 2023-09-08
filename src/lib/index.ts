@@ -56,8 +56,6 @@ export class Lunify {
 
 }
 
-export * from './managers/oauth';
-export * from './structures/player';
-export * from './managers/rest';
-export * from './structures/user';
+export * from './managers';
+export * from './structures';
 export * from './Constants';
