@@ -1,5 +1,5 @@
 import { Lunify } from '../..';
-import { User } from '../user';
+import { PartialUser, User } from '../user';
 import { PlayerDeviceManager } from './DeviceManager';
 
 export * from './Device';
@@ -10,7 +10,7 @@ export class Player {
 
     constructor(
         public client: Lunify,
-        public user: User,
+        public user: User | PartialUser,
     ) {
         this.devices = new PlayerDeviceManager(this.client, this);
     }

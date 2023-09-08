@@ -5,8 +5,19 @@ import { Player } from '../player';
 
 export * from './Oauth';
 
-export class User {
+export class PartialUser {
     public player: Player;
+
+    constructor(
+        public client: Lunify,
+        public oauth: UserOauth,
+    ) {
+        this.player = new Player(client, this);
+    }
+
+}
+
+export class User extends PartialUser {
 
     public country?: string;
     public displayName: string | null;
@@ -28,27 +39,20 @@ export class User {
     constructor(
         public client: Lunify,
         public oauth: UserOauth,
-        data?: ApiUser
+        data: ApiUser
     ) {
-        this.player = new Player(client, this);
+        super(client, oauth);
 
-        if (data) {
-            this.country = data.country;
-            this.displayName = data.display_name;
-            this.email = data.email;
-            this.explicitContent = { enabled: data.explicit_content.filter_enabled, locked: data.explicit_content.filter_locked };
-            this.externalUrls = data.external_urls;
-            this.followers = { url: data.followers.href, total: data.followers.total };
-            this.url = data.href;
-            this.id = data.id;
-            this.images = data.images;
-            this.product = data.product;
-        }
-        else {
-            if (process.env.LUNIFY_IGNORE_USRMGR) return;
-            process.emitWarning('new UserManager(); <-- Is missing param3 (data: ApiUser), this could me accidential, if not use "process.env.LUNIFY_IGNORE_USRMGR = true". You are not able to use any user related data, player will work.');
-        }
-
+        this.country = data.country;
+        this.displayName = data.display_name;
+        this.email = data.email;
+        this.explicitContent = { enabled: data.explicit_content?.filter_enabled || null, locked: data.explicit_content?.filter_locked || null };
+        this.externalUrls = data.external_urls;
+        this.followers = { url: data.followers.href, total: data.followers.total };
+        this.url = data.href;
+        this.id = data.id;
+        this.images = data.images;
+        this.product = data.product;
     }
 
 }
