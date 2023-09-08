@@ -24,3 +24,8 @@ export enum Scopes {
     UserManagePartner = 'user-manage-partner',
     UserCreatePartner = 'user-create-partner',
 }
+
+export enum RequestDomain {
+    Accounts = 'https://accounts.spotify.com/api',
+    Api = 'https://api.spotify.com/v1'
+}

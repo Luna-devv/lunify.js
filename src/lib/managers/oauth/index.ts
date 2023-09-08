@@ -1,15 +1,12 @@
-import { Options, RequestDomain } from '../../../interfaces/rest';
 import { EventEmitter } from 'stream';
 import { ApiTokenResponse } from '../../../interfaces/oauth';
-import { Lunify, Scopes } from '../..';
+import { Lunify, RequestDomain, Scopes } from '../..';
 import { UserOauth } from '../../structures/user';
 
 export class OauthManager extends EventEmitter {
-    private options: Options['oAuth'];
 
     constructor(public client: Lunify) {
         super();
-        this.options = client.options.oAuth;
     }
 
     /**
@@ -20,8 +17,8 @@ export class OauthManager extends EventEmitter {
 
         const params = new URLSearchParams();
         params.append('response_type', 'code');
-        params.append('client_id', this.options.clientId);
-        params.append('redirect_uri', this.options.redirectUri);
+        params.append('client_id', this.client.options.clientId);
+        params.append('redirect_uri', this.client.options.oauth.redirectUri);
         params.append('scope', scopes.join(' '));
         params.append('state', crypto.randomUUID());
 
@@ -36,7 +33,7 @@ export class OauthManager extends EventEmitter {
 
         const params = new URLSearchParams();
         params.append('grant_type', 'authorization_code');
-        params.append('redirect_uri', this.options.redirectUri);
+        params.append('redirect_uri', this.client.options.oauth.redirectUri);
         params.append('code', code);
 
         const res = await this.client.rest.post<ApiTokenResponse>('/token', {

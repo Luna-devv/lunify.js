@@ -9,3 +9,10 @@ export interface ApiRefreshTokenResponse {
 export interface ApiTokenResponse extends ApiRefreshTokenResponse {
     refresh_token: string;
 }
+
+export interface ApiCredentialsResponse {
+    access_token: string;
+    token_type: string;
+    expires_in: number;
+    created_timestamp: number;
+}

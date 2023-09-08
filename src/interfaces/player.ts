@@ -1,3 +1,4 @@
+import { ApiTrack } from './track';
 import { ApiImage } from './user';
 
 export interface ApiDevice {
@@ -38,30 +39,6 @@ export interface ApiPlaybackState {
         toggling_repeat_track: boolean
         transferring_playback: boolean
     };
-}
-
-export interface ApiTrack {
-    album: ApiAlbum;
-    artists: ApiArtist[];
-    available_markets: string[];
-    disc_number: number;
-    duration_ms: number;
-    explicit: boolean;
-    external_ids: Record<string, string>;
-    external_urls: Record<string, string>;
-    href: string;
-    id: string;
-    is_playable: boolean;
-    linked_from: {
-        // Include properties related to linked tracks here
-    };
-    name: string;
-    popularity: number;
-    preview_url: string | null;
-    track_number: number;
-    type: 'track';
-    uri: string;
-    is_local: boolean;
 }
 
 export interface ApiEpisode {
@@ -115,39 +92,4 @@ export interface ApiEpisode {
         uri: string;
         total_episodes: number;
     };
-}
-
-export interface ApiAlbum {
-    album_type: 'album' | 'single' | 'compilation'
-    total_tracks: number
-    available_markets: string[]
-    external_urls: Record<string, string>;
-    href: string
-    id: string
-    images: ApiImage[]
-    name: string
-    release_date: string
-    release_date_precision: 'year' | 'month' | 'day';
-    rescritions: {
-        reason: 'market' | 'product' | 'explicit'
-    };
-    type: string
-    uri: string
-    artists: ApiArtist[]
-}
-
-export interface ApiArtist {
-    external_urls: Record<string, string>;
-    followers: {
-        href: string;
-        total: number;
-    };
-    genres: string[]
-    href: string
-    id: string
-    images: ApiImage[]
-    name: string
-    popularity: number
-    type: 'artist'
-    uri: string
 }

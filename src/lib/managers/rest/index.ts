@@ -1,5 +1,5 @@
-import { Lunify } from '../..';
-import { InternalRequest, RequestData, RequestDomain, RequestMethod, ResponseLike, RouteLike } from '../../../interfaces/rest';
+import { Lunify, RequestDomain } from '../..';
+import { InternalRequest, RequestData, RequestMethod, ResponseLike, RouteLike } from '../../../interfaces/rest';
 
 export class RestManager {
 
@@ -22,7 +22,12 @@ export class RestManager {
         } as Record<string, string>;
 
         if (request.authRequired) {
-            headers.Authorization = 'Basic ' + Buffer.from(this.client.options.oAuth.clientId + ':' + this.client.options.oAuth.clientSecret).toString('base64');
+            headers.Authorization = 'Basic ' + Buffer.from(this.client.options.clientId + ':' + this.client.options.clientSecret).toString('base64');
+        }
+
+        if (request.advancedAuthRequired) {
+            if (!this.client.ready) throw Error(`Request ${request.route} failed: client was not ready.`);
+            headers.Authorization = await this.client.credentials.getAuthorization();
         }
 
         const url = this.resolveUrl(request.domain, request.route, query);

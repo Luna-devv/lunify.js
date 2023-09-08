@@ -1,16 +1,12 @@
 import { Readable } from 'node:stream';
+import { RequestDomain } from '../lib';
 
 export interface Options {
-    oAuth: {
-        clientId: string;
-        clientSecret: string;
+    clientId: string;
+    clientSecret: string;
+    oauth: {
         redirectUri: string;
-    },
-}
-
-export enum RequestDomain {
-    Accounts = 'https://accounts.spotify.com/api',
-    Api = 'https://api.spotify.com/v1'
+    }
 }
 
 export interface RequestData {
@@ -18,13 +14,20 @@ export interface RequestData {
      * The domain used for making requests
      * @default https://api.spotify.com/v1
      */
-    domain?: RequestDomain
+    domain?: RequestDomain;
 
     /**
-     * If this requests requires client authentication (not oAuth)
+     * If this requests requires basic client authentication (not oAuth)
      * @default false
      */
     authRequired?: boolean;
+
+    /**
+     * If this requests requires client authentication (not oAuth)
+     * @link https://developer.spotify.com/documentation/web-api/tutorials/getting-started#Request-an access-token
+     * @default false
+     */
+    advancedAuthRequired?: boolean;
 
     /**
      * The body of the request.
@@ -64,4 +67,11 @@ export interface ResponseLike
         'arrayBuffer' | 'bodyUsed' | 'headers' | 'json' | 'ok' | 'status' | 'text'
     > {
     body: Readable | ReadableStream | null;
+}
+
+export interface StructureFetchOptions {
+    /**
+     * Fetch from the spotify api regardless if it's cached or not
+     */
+    force?: boolean;
 }

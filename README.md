@@ -4,6 +4,7 @@
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I3I6AFVAP)
 
+**⚠️ In development, breaking changes ⚠️**
 ## About
 This is an unofficial [spotify](https://developer.spotify.com) package written for **Typecript and JavaScript** to interact with its public and oAuth API.
 
@@ -25,18 +26,21 @@ yarn add lunify.js
 ## Example
 ```ts
 import fastify from 'fastify';
-
 import { Lunify, OauthTokenManager, UserManager, Scopes } from 'lunify.js';
 
 const app = fastify();
 const api = new Lunify({
-    oAuth: {
-        clientId: '',
-        clientSecret: '',
+    clientId: '',
+    clientSecret: '',
+    oauth: {
         redirectUri: 'http://10.0.0.50:7654/callback'
     }
 });
 
+// only needed if you want to fetch non oauth things like tracks, albumbs and artists
+api.fetchCredentials();
+
+// GET http://10.0.0.50:7654/login
 app.get('/login', (req, res) => {
     const url = api.oauth.generateUrl([Scopes.Streaming, Scopes.UserModifyPlaybackState, Scopes.UserReadPlaybackState]);
     res.redirect(url);
@@ -44,6 +48,7 @@ app.get('/login', (req, res) => {
 
 let access: OauthTokenManager | undefined;
 
+// GET http://10.0.0.50:7654/callback
 app.get('/callback', async (req, res) => {
     const code = (req.query as Record<string, string>).code || null;
     const state = (req.query as Record<string, string>).state || null;
@@ -57,14 +62,32 @@ app.get('/callback', async (req, res) => {
     return 'OK';
 });
 
+// PUT http://10.0.0.50:7654/play?track=https://open.spotify.com/track/0ZVjgfaC2Ptrod9v6p9KFP
 app.put('/play', (req, res) => {
-    const track = (req.query as Record<string, string>).track?.split('/track/')?.[1];
+    const track = (req.query as Record<string, string>).track?.split('/track/')?.[1]?.split("?")[0];
     if (!track) return 'INVALID_TRACK';
 
     const user = new UserManager(api, access);
     user.player.play(track);
 
     return 'OK';
+});
+
+// GET http://10.0.0.50:7654/track?track=https://open.spotify.com/track/0ZVjgfaC2Ptrod9v6p9KFP
+// needs "api.fetchCredentials();" anywhere in your project
+app.get('/track', (req, res) => {
+    const track = (req.query as Record<string, string>).track?.split('/track/')?.[1]?.split("?")[0];
+    if (!track) return 'INVALID_TRACK';
+
+    const track = await api.tracks.fetch(trackId);
+    console.log(track);
+
+    return 'OK';
+});
+
+app.listen({ host: '10.0.0.50', port: 7654 }, (err, address) => {
+    if (err) console.log(err);
+    console.log(`Listening to ${address}`);
 });
 ```
 

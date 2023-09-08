@@ -14,7 +14,9 @@
         "type": "git",
         "url": "https://github.com/Luna-devv/lunify.js"
     },
-    "dependencies": {},
+    "dependencies": {
+        "@discordjs/collection": "^1.5.3"
+    },
     "devDependencies": {
         "@types/node": "^20.4.10",
         "@types/node-fetch": "^2.6.4",
