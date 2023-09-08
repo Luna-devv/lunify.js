@@ -1,6 +1,6 @@
 import { Lunify } from '../..';
 import { ApiDevice } from '../../../interfaces/player';
-import { User } from '../user';
+import { PartialUser, User } from '../user';
 
 export class PlayerDevice {
     public id?: string;
@@ -14,7 +14,7 @@ export class PlayerDevice {
 
     constructor(
         public client: Lunify,
-        public user: User,
+        public user: User | PartialUser,
         data: ApiDevice
     ) {
         this.id = data.id;
