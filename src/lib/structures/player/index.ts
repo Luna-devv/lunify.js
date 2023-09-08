@@ -35,7 +35,7 @@ export class Player {
 
         await this.client.rest.put('/me/player/play', {
             headers: {
-                Authorization: this.user.oauth.getAuthorization()
+                Authorization: await this.user.oauth.getAuthorization()
             },
             body: {
                 uris: finalTracks
@@ -56,7 +56,7 @@ export class Player {
 
         await this.client.rest.put('/me/player/play', {
             headers: {
-                Authorization: this.user.oauth.getAuthorization()
+                Authorization: await this.user.oauth.getAuthorization()
             }
         });
 
@@ -73,7 +73,7 @@ export class Player {
 
         await this.client.rest.put('/me/player/pause', {
             headers: {
-                Authorization: this.user.oauth.getAuthorization()
+                Authorization: await this.user.oauth.getAuthorization()
             }
         });
 
@@ -90,7 +90,7 @@ export class Player {
 
         await this.client.rest.post('/me/player/next', {
             headers: {
-                Authorization: this.user.oauth.getAuthorization()
+                Authorization: await this.user.oauth.getAuthorization()
             }
         });
 
@@ -107,7 +107,7 @@ export class Player {
 
         await this.client.rest.post('/me/player/previous', {
             headers: {
-                Authorization: this.user.oauth.getAuthorization()
+                Authorization: await this.user.oauth.getAuthorization()
             }
         });
 
@@ -125,7 +125,7 @@ export class Player {
 
         await this.client.rest.put('/me/player/seek', {
             headers: {
-                Authorization: this.user.oauth.getAuthorization()
+                Authorization: await this.user.oauth.getAuthorization()
             },
             query: {
                 position_ms: position
@@ -151,7 +151,7 @@ export class Player {
 
         await this.client.rest.put('/me/player/repeat', {
             headers: {
-                Authorization: this.user.oauth.getAuthorization()
+                Authorization: await this.user.oauth.getAuthorization()
             },
             query: {
                 state: mode || 'off'
@@ -172,7 +172,7 @@ export class Player {
 
         await this.client.rest.put('/me/player/volume', {
             headers: {
-                Authorization: this.user.oauth.getAuthorization()
+                Authorization: await this.user.oauth.getAuthorization()
             },
             query: {
                 volume_percent: percentage
@@ -193,7 +193,7 @@ export class Player {
 
         await this.client.rest.put('/me/player/shuffle', {
             headers: {
-                Authorization: this.user.oauth.getAuthorization()
+                Authorization: await this.user.oauth.getAuthorization()
             },
             query: {
                 state

@@ -25,21 +25,21 @@ export class UserOauth {
 
     /**
      * Refresh the spotify access token
-     * @returns Whenever the refresh was successfull or not
      */
     async refresh() {
-        if (!this.refreshToken) return false;
+        if (!this.refreshToken) return undefined;
 
         const data = await this.client.oauth.refreshToken(this.refreshToken);
         this.accessToken = data.accessToken;
 
-        return true;
+        return data.accessToken;
     }
 
     /**
      * Generates a authorization token header
      */
-    getAuthorization() {
+    async getAuthorization() {
+        if (this.expiresTimestamp < Date.now()) await this.refresh();
         return this.tokenType + ' ' + this.accessToken;
     }
 
