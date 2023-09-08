@@ -3,7 +3,7 @@ import { Player } from '.';
 import { ApiDevice } from '../../../interfaces/player';
 import { PlayerDevice } from './Device';
 
-export class PlayerDevices {
+export class PlayerDeviceManager {
 
     constructor(
         public client: Lunify,
@@ -14,7 +14,7 @@ export class PlayerDevices {
 
         const res = await this.client.rest.get<{ devices: ApiDevice[] }>('/me/player/devices', {
             headers: {
-                Authorization: this.player.user.oauth.getAuthorization()
+                Authorization: await this.player.user.oauth.getAuthorization()
             }
         });
 
@@ -38,7 +38,7 @@ export class PlayerDevices {
 
         await this.client.rest.put('/me/player', {
             headers: {
-                Authorization: this.player.user.oauth.getAuthorization()
+                Authorization: await this.player.user.oauth.getAuthorization()
             },
             body: {
                 device_ids: finalDevices

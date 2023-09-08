@@ -1,18 +1,18 @@
 import { Lunify } from '../..';
 import { User } from '../user';
-import { PlayerDevices } from './Devices';
+import { PlayerDeviceManager } from './DeviceManager';
 
 export * from './Device';
-export * from './Devices';
+export * from './DeviceManager';
 
 export class Player {
-    public devices: PlayerDevices;
+    public devices: PlayerDeviceManager;
 
     constructor(
         public client: Lunify,
         public user: User,
     ) {
-        this.devices = new PlayerDevices(this.client, this);
+        this.devices = new PlayerDeviceManager(this.client, this);
     }
 
     /**
@@ -22,15 +22,15 @@ export class Player {
      * player.start('6IRdLKIyS4p7XNiP8r6rsx');
      * ```
      */
-    async play(track: string | string[]) {
+    async play(trackId: string | string[]) {
 
         const finalTracks: string[] = [];
 
-        if (typeof track !== 'string') {
-            for (const t of track) finalTracks.push('spotify:track:' + t);
+        if (typeof trackId !== 'string') {
+            for (const t of trackId) finalTracks.push('spotify:track:' + t);
         }
         else {
-            finalTracks.push('spotify:track:' + track);
+            finalTracks.push('spotify:track:' + trackId);
         }
 
         await this.client.rest.put('/me/player/play', {
