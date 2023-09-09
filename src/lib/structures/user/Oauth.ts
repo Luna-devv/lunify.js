@@ -9,6 +9,7 @@ export class UserOauth {
     public expiresIn: number;
     public expiresTimestamp: number;
     public createdTimestamp: number;
+    public revoked: boolean;
 
     constructor(
         public client: Lunify,
@@ -21,18 +22,27 @@ export class UserOauth {
         this.expiresIn = data.expires_in * 1000;
         this.expiresTimestamp = data.created_timestamp + data.expires_in * 1000;
         this.createdTimestamp = data.created_timestamp;
+        this.revoked = false;
     }
 
     /**
      * Refresh the spotify access token
      */
     async refresh() {
+        if (this.revoked) throw Error('Refresh token revoked');
         if (!this.refreshToken) return undefined;
 
-        const data = await this.client.oauth.refreshToken(this.refreshToken);
-        this.accessToken = data.accessToken;
+        const res = await this.client.oauth.refreshToken(this.refreshToken)
+            .catch((e) => e);
 
-        return data.accessToken;
+        if ('message' in res && res.message.includes('revoked')) {
+            this.revoked = true;
+            throw Error(res);
+        }
+
+        this.accessToken = res.accessToken;
+
+        return res.accessToken;
     }
 
     /**
