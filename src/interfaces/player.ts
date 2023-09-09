@@ -25,7 +25,7 @@ export interface ApiPlaybackState {
     timestamp: number;
     progress_ms: number;
     is_playing: boolean;
-    item?: (ApiTrack | ApiEpisode)[];
+    item?: ApiTrack | ApiEpisode;
     currently_playing_type: 'track' | 'episode' | 'unknown';
     actions: {
         interrupting_playback: boolean

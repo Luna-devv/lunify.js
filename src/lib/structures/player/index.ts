@@ -1,5 +1,7 @@
 import { Lunify } from '../..';
+import { ApiPlaybackState } from '../../../interfaces/player';
 import { PartialUser, User } from '../user';
+import { CurrentPlayback } from './CurrentPlayback';
 import { PlayerDeviceManager } from './DeviceManager';
 
 export * from './Device';
@@ -13,6 +15,18 @@ export class Player {
         public user: User | PartialUser,
     ) {
         this.devices = new PlayerDeviceManager(this.client, this);
+    }
+
+    async now() {
+
+        const res = await this.client.rest.get<ApiPlaybackState>('/me/player', {
+            headers: {
+                Authorization: await this.user.oauth.getAuthorization()
+            }
+        });
+
+        if (!res) return undefined;
+        return new CurrentPlayback(this.client, this.user, res);
     }
 
     /**
