@@ -24,8 +24,10 @@ export class ClientCredentials {
      * Generates a authorization token header
      */
     async getAuthorization() {
-        if (this.expiresTimestamp < Date.now()) await this.client.fetchCredentials();
-        return this.tokenType + ' ' + this.accessToken;
+        let { accessToken } = this;
+        // eslint-disable-next-line prefer-destructuring
+        if (this.expiresTimestamp < Date.now()) accessToken = (await this.client.fetchCredentials()).accessToken;
+        return this.tokenType + ' ' + accessToken;
     }
 
 }
