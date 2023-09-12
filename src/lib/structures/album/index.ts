@@ -1,7 +1,7 @@
 import { Lunify, PartialTrack } from '../..';
 import { ApiAlbum, ApiPartialAlbum } from '../../../interfaces/album';
 import { ApiImage } from '../../../interfaces/user';
-// import { ApiArtist } from '../../../interfaces/artists';
+import { Artist } from '../artist';
 
 export class PartialAlbum {
     public totalTracks: number;
@@ -16,6 +16,7 @@ export class PartialAlbum {
     public restrictions: ApiPartialAlbum['restrictions']['reason'];
     public type: ApiPartialAlbum['album_type'];
     public uri: string;
+    public artists: Artist[];
 
     constructor(
         public client: Lunify,
@@ -32,6 +33,9 @@ export class PartialAlbum {
         this.restrictions = data.restrictions?.reason;
         this.type = data.album_type;
         this.uri = data.uri;
+
+        this.artists = [];
+        for (const artist of data.artists) this.artists.push(new Artist(client, artist));
     }
 
 }

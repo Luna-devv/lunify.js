@@ -1,9 +1,9 @@
 import { ApiPartialAlbum } from './album';
-import { ApiArtist, ApiPartialArtists } from './artists';
+import { ApiArtist, ApiPartialArtist } from './artist';
 
 export interface ApiPartialTrack {
     album: ApiPartialAlbum;
-    artists: ApiPartialArtists[];
+    artists: ApiPartialArtist[];
     available_markets: string[];
     disc_number: number;
     duration_ms: number;

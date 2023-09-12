@@ -1,6 +1,6 @@
 import { ApiImage } from './user';
 
-export interface ApiPartialArtists {
+export interface ApiPartialArtist {
     external_urls: Record<string, string>;
     href: string;
     id: string;
@@ -9,7 +9,7 @@ export interface ApiPartialArtists {
     uri: string;
 }
 
-export interface ApiArtist extends ApiPartialArtists {
+export interface ApiArtist extends ApiPartialArtist {
     followers: {
         href: string;
         total: number;

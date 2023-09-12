@@ -1,4 +1,4 @@
-import { ApiArtist } from './artists';
+import { ApiArtist } from './artist';
 import { ApiPartialTrack } from './track';
 import { ApiImage } from './user';
 
@@ -29,7 +29,7 @@ export interface ApiAlbum extends ApiPartialAlbum {
         offset: number;
         previous: string | null;
         total: number;
-        items: ApiPartialTrack[];
+        items: (Omit<ApiPartialTrack, 'album'>)[];
     }
     copyrights: {
         text: string;

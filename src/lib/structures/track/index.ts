@@ -1,11 +1,11 @@
 import { Lunify } from '../..';
-// import { ApiArtist } from '../../../interfaces/artists';
 import { ApiPartialTrack, ApiTrack } from '../../../interfaces/track';
 import { PartialAlbum } from '../album';
+import { Artist, PartialArtist } from '../artist';
 
 export class PartialTrack {
     public album: PartialAlbum;
-    // public artists: Artist[]; // TODO
+    public artists: PartialArtist[];
     public markets: string[];
     public disc: number;
     public duration: number;
@@ -25,10 +25,13 @@ export class PartialTrack {
 
     constructor(
         public client: Lunify,
-        data?: ApiPartialTrack
+        data?: Omit<ApiPartialTrack, 'album'> & { album?: ApiPartialTrack['album'] }
     ) {
-        this.album = new PartialAlbum(client, data.album);
-        // this.artists = data.artists;
+        if (data.album) this.album = new PartialAlbum(client, data.album);
+
+        this.artists = [];
+        for (const artist of data.artists) this.artists.push(new PartialArtist(client, artist));
+
         this.markets = data.available_markets;
         this.disc = data.disc_number;
         this.duration = data.duration_ms;
@@ -50,6 +53,7 @@ export class PartialTrack {
 }
 
 export class Track extends PartialTrack {
+    public artists: Artist[];
     public externalIds: Record<string, string>;
     public popularity: number;
 
@@ -58,6 +62,9 @@ export class Track extends PartialTrack {
         data?: ApiTrack
     ) {
         super(client, data);
+
+        this.artists = [];
+        for (const artist of data.artists) this.artists.push(new Artist(client, artist));
 
         this.externalIds = data.external_ids;
         this.popularity = data.popularity;
