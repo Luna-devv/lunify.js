@@ -1,7 +1,7 @@
 {
     "name": "lunify.js",
     "description": "A basic api wrapper for the spotify api covering the oauth routes.",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "main": "dist/src/lib/index.js",
     "types": "dist/src/lib/index.d.js",
     "files": [

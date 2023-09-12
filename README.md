@@ -69,7 +69,6 @@ console.log(user.displayName)
 ```
 
 ### Getting tracks
-
 **If you haven't already**, you should put this at the root of your project to fetch your client's credentials.
 ```ts
 api.fetchCredentials();
@@ -85,7 +84,6 @@ const track = await api.tracks.fetch("4cOdK2wGLETKBW3PvgPWqT", { force: true });
 ```
 
 ## Example
-
 ```ts
 import fastify from 'fastify';
 import { Lunify, UserOauth, Scopes, PartialUser } from '../src/lib';
