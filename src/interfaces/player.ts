@@ -67,7 +67,7 @@ export interface ApiEpisode {
     };
     type: 'episode';
     uri: string;
-    rescritions: {
+    restrictions: {
         reason: 'market' | 'product' | 'explicit'
     };
     show: {
