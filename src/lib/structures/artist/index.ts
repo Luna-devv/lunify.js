@@ -38,7 +38,7 @@ export class Artist extends PartialArtist {
     ) {
         super(client, data);
 
-        this.followers = { url: data.followers.href, total: data.followers.total };
+        this.followers = { url: data.followers?.href, total: data.followers?.total };
         this.genres = data.genres;
         this.images = data.images;
         this.popularity = data.popularity;

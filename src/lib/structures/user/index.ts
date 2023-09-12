@@ -48,7 +48,7 @@ export class User extends PartialUser {
         this.email = data.email;
         this.explicitContent = { enabled: data.explicit_content?.filter_enabled || null, locked: data.explicit_content?.filter_locked || null };
         this.externalUrls = data.external_urls;
-        this.followers = { url: data.followers.href, total: data.followers.total };
+        this.followers = { url: data.followers?.href, total: data.followers?.total };
         this.url = data.href;
         this.id = data.id;
         this.images = data.images;

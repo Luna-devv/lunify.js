@@ -1,5 +1,5 @@
 import { ApiPartialAlbum } from './album';
-import { ApiArtist, ApiPartialArtist } from './artist';
+import { ApiPartialArtist } from './artist';
 
 export interface ApiPartialTrack {
     album: ApiPartialAlbum;
@@ -25,7 +25,6 @@ export interface ApiPartialTrack {
 }
 
 export interface ApiTrack extends ApiPartialTrack {
-    artists: ApiArtist[];
     external_ids: Record<string, string>;
     popularity: number;
 }

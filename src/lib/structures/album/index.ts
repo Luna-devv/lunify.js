@@ -13,7 +13,7 @@ export class PartialAlbum {
     public name: string;
     public release: Date;
     public releasePrecision: ApiPartialAlbum['release_date_precision'];
-    public restrictions: ApiPartialAlbum['restrictions']['reason'];
+    public restrictions: ApiPartialAlbum['restrictions']['reason'] | null;
     public type: ApiPartialAlbum['album_type'];
     public uri: string;
     public artists: Artist[];
@@ -30,7 +30,7 @@ export class PartialAlbum {
         this.images = data.images;
         this.name = data.name;
         this.release = new Date(data.release_date);
-        this.restrictions = data.restrictions?.reason;
+        this.restrictions = data.restrictions?.reason || null;
         this.type = data.album_type;
         this.uri = data.uri;
 
