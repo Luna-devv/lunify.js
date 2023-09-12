@@ -1,7 +1,7 @@
 import { Lunify, Track } from '../..';
 import { ApiEpisode, ApiPlaybackState } from '../../../interfaces/player';
 import { ApiTrack } from '../../../interfaces/track';
-import { PartialUser, User } from '../user';
+import { PartialUser } from '../user';
 import { PlayerDevice } from './Device';
 
 export class CurrentPlayback {
@@ -17,7 +17,7 @@ export class CurrentPlayback {
 
     constructor(
         public client: Lunify,
-        public user: User | PartialUser,
+        public user: PartialUser,
         data: ApiPlaybackState
     ) {
         this.device = new PlayerDevice(this.client, user, data.device);
