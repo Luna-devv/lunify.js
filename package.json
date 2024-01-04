@@ -1,7 +1,7 @@
 {
     "name": "lunify.js",
     "description": "A basic api wrapper for the spotify api covering the oauth routes.",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "main": "dist/src/lib/index.js",
     "types": "dist/src/lib/index.d.js",
     "files": [
@@ -18,13 +18,13 @@
         "@discordjs/collection": "^1.5.3"
     },
     "devDependencies": {
-        "@types/node": "^20.4.10",
-        "@types/node-fetch": "^2.6.4",
-        "@typescript-eslint/eslint-plugin": "^6.3.0",
-        "@typescript-eslint/parser": "^6.3.0",
-        "dotenv": "^16.0.1",
-        "eslint": "^8.47.0",
-        "fastify": "^4.22.2",
-        "typescript": "^4.7.2"
+        "@types/node": "^20.10.6",
+        "@types/node-fetch": "^2.6.10",
+        "@typescript-eslint/eslint-plugin": "^6.17.0",
+        "@typescript-eslint/parser": "^6.17.0",
+        "dotenv": "^16.3.1",
+        "eslint": "^8.56.0",
+        "fastify": "^4.25.2",
+        "typescript": "^4.9.5"
     }
 }
