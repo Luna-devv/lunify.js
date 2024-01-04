@@ -3,7 +3,7 @@ import { ApiRefreshTokenResponse, ApiTokenResponse } from '../../../interfaces/o
 
 export class UserOauth {
     public accessToken: string;
-    public refreshToken: string;
+    public refreshToken: string | null;
     public tokenType: string;
     public scope: string;
     public expiresIn: number;
@@ -15,7 +15,9 @@ export class UserOauth {
         public client: Lunify,
         data: ApiTokenResponse | ApiRefreshTokenResponse
     ) {
+        this.refreshToken = null;
         if ('refresh_token' in data) this.refreshToken = data.refresh_token;
+
         this.accessToken = data.access_token;
         this.tokenType = data.token_type;
         this.scope = data.scope;
@@ -28,20 +30,20 @@ export class UserOauth {
     /**
      * Refresh the spotify access token
      */
-    async refresh() {
+    async refresh(refreshToken?: string) {
+        if (refreshToken) this.refreshToken = refreshToken;
+
         if (this.revoked) throw Error('Refresh token revoked');
-        if (!this.refreshToken) return undefined;
+        if (!this.refreshToken) throw Error('No refresh token provided');
 
-        const res = await this.client.oauth.refreshToken(this.refreshToken)
-            .catch((e) => e);
+        const res = await this.client.oauth.refreshToken(this.refreshToken);
 
-        if ('message' in res && res.message.includes('revoked')) {
+        if (!res) {
             this.revoked = true;
-            throw Error(res);
+            throw Error('User refresh token revoked');
         }
 
         this.accessToken = res.accessToken;
-
         return res.accessToken;
     }
 
@@ -49,8 +51,19 @@ export class UserOauth {
      * Generates a authorization token header
      */
     async getAuthorization() {
-        if (this.expiresTimestamp < Date.now()) await this.refresh();
+        if (this.expiresTimestamp < Date.now()) {
+            await this.refresh();
+        }
+
         return this.tokenType + ' ' + this.accessToken;
+    }
+
+    /**
+     * Check if the access token is still valid (expires after 1 hour of creating, usually)
+     */
+    async isValid() {
+        if (this.expiresTimestamp < Date.now()) return false;
+        return true;
     }
 
     /**

@@ -26,6 +26,7 @@ export class UsersManager {
         let user: User | undefined;
 
         if (!options?.force) {
+            // not sure if there is a better way
             user = this.cache.find((u) => u.oauth.refreshToken === access.refreshToken);
             if (user) return user;
         }

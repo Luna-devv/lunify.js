@@ -67,8 +67,12 @@ export class OauthManager extends EventEmitter {
             },
             body: params
         });
-        res.created_timestamp = Date.now();
 
+        if ('message' in res) {
+            throw Error(res.message as string);
+        }
+
+        res.created_timestamp = Date.now();
         return new UserOauth(this.client, res);
     }
 
