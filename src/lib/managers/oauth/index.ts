@@ -44,8 +44,8 @@ export class OauthManager extends EventEmitter {
             },
             body: params
         });
-        res.created_timestamp = Date.now();
 
+        res.created_timestamp = Date.now();
         return new UserOauth(this.client, res);
     }
 
@@ -71,6 +71,14 @@ export class OauthManager extends EventEmitter {
         if ('message' in res) {
             throw Error(res.message as string);
         }
+
+        // Sometimes, <UserOauth>.refreshToken is null for some reason.
+        // Spotify claims they return a new refresh token, but I don't trust them.
+        // I am just testing things and see what sticks, will be removed if this doesn't fix it.
+        // It only happens sometimes, it seems to only appear after a few days without restarting the node process.
+        // Contact me: luna@waya.one - https://discord.gg/yYd6YKHQZH
+        // https://developer.spotify.com/documentation/web-api/tutorials/refreshing-tokens
+        res.refresh_token ||= refreshToken;
 
         res.created_timestamp = Date.now();
         return new UserOauth(this.client, res);
