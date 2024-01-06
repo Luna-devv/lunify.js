@@ -1,7 +1,17 @@
 {
     "name": "lunify.js",
     "description": "A basic api wrapper for the spotify api covering the oauth routes.",
-    "version": "0.1.7",
+    "keywords": [
+        "spotify",
+        "api",
+        "wrapper",
+        "stats.fm",
+        "spotify.js",
+        "last.fm",
+        "oauth2",
+        "music"
+    ],
+    "version": "0.1.8",
     "main": "dist/src/lib/index.js",
     "types": "dist/src/lib/index.d.js",
     "files": [
@@ -15,13 +25,13 @@
         "url": "https://github.com/Luna-devv/lunify.js"
     },
     "dependencies": {
-        "@discordjs/collection": "^1.5.3"
+        "@discordjs/collection": "^2.0.0"
     },
     "devDependencies": {
         "@types/node": "^20.10.6",
         "@types/node-fetch": "^2.6.10",
-        "@typescript-eslint/eslint-plugin": "^6.17.0",
-        "@typescript-eslint/parser": "^6.17.0",
+        "@typescript-eslint/eslint-plugin": "^6.18.0",
+        "@typescript-eslint/parser": "^6.18.0",
         "dotenv": "^16.3.1",
         "eslint": "^8.56.0",
         "fastify": "^4.25.2",
