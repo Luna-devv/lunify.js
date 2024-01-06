@@ -5,7 +5,7 @@ export class UserOauth {
     public accessToken: string;
     public refreshToken: string | null;
     public tokenType: string;
-    public scope: string;
+    public scope: Scopes[];
     public expiresIn: number;
     public expiresTimestamp: number;
     public createdTimestamp: number;
@@ -20,11 +20,19 @@ export class UserOauth {
 
         this.accessToken = data.access_token;
         this.tokenType = data.token_type;
-        this.scope = data.scope;
+        this.scope = this.convertScopesToStringArray(data.scope);
         this.expiresIn = data.expires_in * 1000;
         this.expiresTimestamp = data.created_timestamp + data.expires_in * 1000;
         this.createdTimestamp = data.created_timestamp;
         this.revoked = false;
+    }
+
+    private convertScopesToStringArray(scopesString: string): Scopes[] {
+        const scopesArray: string[] = scopesString.split(' ');
+        const enumValues = Object.values(Scopes);
+
+        return scopesArray
+            .filter((scope) => enumValues.includes(scope as Scopes)) as Scopes[];
     }
 
     /**
