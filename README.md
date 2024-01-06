@@ -5,8 +5,9 @@
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I3I6AFVAP)
 
 **⚠️ In development, breaking changes ⚠️**
+
 ## About
-This is an unofficial [spotify](https://developer.spotify.com) package written for **Typecript and JavaScript** to interact with its public and oAuth API.
+This is an unofficial [spotify](https://developer.spotify.com) package written for **Typecript and JavaScript** to interact with its public and oAuth API. Everything is tested with Visual Studio Code, node.js 21 or greater and Typescript (ESM, compiled to ES2016 - ES2022, CommonJS).
 
 If you need help using this package, join **[our Discord Server](https://discord.com/invite/yYd6YKHQZH)**.
 
@@ -19,7 +20,11 @@ If you run **node.js v18 or higher**, use
 npm install lunify.js
 # With yarn
 yarn add lunify.js
+# With pnpm
+pnpm add lunify.js
 ```
+
+**node.js v17 or lower** is currently not supported.
 
 ## Quick documentation
 
@@ -34,16 +39,17 @@ const api = new Lunify({
     clientId: '898e127e95f24f578fdbfec93ae203cd',
     clientSecret: 'dc302ea39cefbdf875f42f59e721e898',
 
-    // If you want to use oauth
+    // If you want to have access to oauth2
     oauth: {
         redirectUri: 'http://10.0.0.50:7654/callback'
     }
 });
-```
 
-If you want access to not oauth related routes like tracks, you need to fetch client credentials like bellow, we recommend having that in the root of your project.
-```ts
-api.fetchCredentials();
+// If you want access to not oauth2 related routes like tracks,
+// you need to fetch client credentials like bellow, we
+// recommend having that in the root of your project.
+
+await api.fetchCredentials();
 ```
 
 ### Oauth (login with spotify)
@@ -71,27 +77,26 @@ console.log(user.displayName)
 ### Getting tracks
 **If you haven't already**, you should put this at the root of your project to fetch your client's credentials.
 ```ts
-api.fetchCredentials();
+await api.fetchCredentials();
 ```
 
-Getting a single track, note that all fetched data gets cached until a restart to not spam the api as much
+Getting a single track, note that all fetched data gets cached to not spam the api as much
 ```ts
 const track = await api.tracks.fetch("4cOdK2wGLETKBW3PvgPWqT");
 
 // or if you want to skip the cache
-
 const track = await api.tracks.fetch("4cOdK2wGLETKBW3PvgPWqT", { force: true });
 ```
 
 ## Example
 ```ts
 import fastify from 'fastify';
-import { Lunify, UserOauth, Scopes, PartialUser } from '../src/lib';
+import { Lunify, UserOauth, Scopes, PartialUser } from 'lunify.js';
 
 const app = fastify();
 const api = new Lunify({
     clientId: '898e127e95f24f578fdbfec93ae203cd',
-    clientSecret: '6360a2220218448a85428353dbe65c4b',
+    clientSecret: 'dc302ea39cefbdf875f42f59e721e898',
     oauth: {
         redirectUri: 'http://localhost:3000/callback'
     }
@@ -108,24 +113,27 @@ let access: UserOauth | undefined;
 
 // Callback to get your authorization code and fetch your user credentials (NOT spotify login credentials)
 // GET http://localhost:3000/callback
-app.get('/callback', async (req, res) => {
+app.get('/callback', async (req) => {
     const code = (req.query as Record<string, string>).code || null;
     const state = (req.query as Record<string, string>).state || null;
     const error = (req.query as Record<string, string>).error || null;
 
     if (error) return error;
-    if (!state) return 'INVALID_STATE';
+    if (!state) return 'Invalud state';
 
     access = await api.oauth.fetchToken(code);
 
+    console.log(access)
     return 'OK';
 });
 
 // Play a track on your current device, provide a track as query param (don't forget to remove all of spotifies tracking queries from their links)
-// PUT http://localhost:3000/play?track=https://open.spotify.com/track/0ZVjgfaC2Ptrod9v6p9KFP
-app.put('/play', (req, res) => {
-    const track = (req.query as Record<string, string>).track?.split('/track/')?.[1]?.split("?")[0];
-    if (!track) return 'INVALID_TRACK';
+// GET http://localhost:3000/play?track=https://open.spotify.com/track/0ZVjgfaC2Ptrod9v6p9KFP
+app.get('/play', (req) => {
+    if (!access) return "You need to go to /login first"
+
+    const track = (req.query as Record<string, string>).track?.split('/track/')?.[1]?.split('?')[0];
+    if (!track) return 'No track id';
 
     // We use PartialUser so we do not have to fetch user data to use it's player
     const user = new PartialUser(api, access);
@@ -136,24 +144,27 @@ app.put('/play', (req, res) => {
 
 // Get your user data
 // GET http://localhost:3000/me
-app.get('/me', (req, res) => {
+app.get('/me', async () => {
+    if (!access) return "You need to go to /login first"
+
     const user = await access.fetchUser();
 
     console.log(user);
-
-    return res.send('OK');
+    return 'OK';
 });
 
-// Fetch a track, provide a track as query param (don't forget to remove all of spotifies tracking queries from their links) 
+// Fetch a track, provide a track as query param (don't forget to remove all of spotifies tracking queries from their links)
 // GET http://localhost:3000/track?track=https://open.spotify.com/track/0ZVjgfaC2Ptrod9v6p9KFP
-// needs "api.fetchCredentials();" in the root of your project
-app.get('/track', (req, res) => {
-    const track = (req.query as Record<string, string>).track?.split('/track/')?.[1]?.split("?")[0];
-    if (!track) return 'INVALID_TRACK';
+app.get('/track', async (req) => {
+    // or "api.fetchCredentials();" in the root of your project
+    if (!api.ready) await api.fetchCredentials();
+
+    const trackId = (req.query as Record<string, string>).track?.split('/track/')?.[1]?.split('?')[0];
+    if (!trackId) return 'No track id';
 
     const track = await api.tracks.fetch(trackId);
-    console.log(track);
 
+    console.log(track);
     return 'OK';
 });
 
