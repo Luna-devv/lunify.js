@@ -1,6 +1,6 @@
 import { EventEmitter } from 'stream';
 import { ApiTokenResponse } from '../../../interfaces/oauth';
-import { Lunify, RequestDomain, Scopes } from '../..';
+import { Lunify, LunifyErrors, RequestDomain, Scopes } from '../..';
 import { UserOauth } from '../../structures/user';
 
 export class OauthManager extends EventEmitter {
@@ -14,6 +14,7 @@ export class OauthManager extends EventEmitter {
      * @param {Scopes[]} scopes - A list of spotify scopes {@link https://developer.spotify.com/documentation/web-api/concepts/scopes}
      */
     generateUrl(scopes: Scopes[]) {
+        if (!this.client.options.oauth.redirectUri) throw Error(LunifyErrors.NoRedirectUri);
 
         const params = new URLSearchParams();
         params.append('response_type', 'code');
@@ -30,6 +31,7 @@ export class OauthManager extends EventEmitter {
      * @param {string} code - oAuth code
      */
     async fetchToken(code: string) {
+        if (!this.client.options.oauth.redirectUri) throw Error(LunifyErrors.NoRedirectUri);
 
         const params = new URLSearchParams();
         params.append('grant_type', 'authorization_code');

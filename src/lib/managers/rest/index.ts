@@ -1,4 +1,4 @@
-import { Lunify, RequestDomain } from '../..';
+import { Lunify, LunifyErrors, RequestDomain, userAgent } from '../..';
 import { InternalRequest, RequestData, RequestMethod, ResponseLike, RouteLike } from '../../../interfaces/rest';
 
 export class RestManager {
@@ -18,7 +18,7 @@ export class RestManager {
         }
 
         const headers = {
-            'User-Agent': 'Lunify.js'.trim()
+            'User-Agent': userAgent.trim()
         } as Record<string, string>;
 
         if (request.authRequired) {
@@ -26,7 +26,7 @@ export class RestManager {
         }
 
         if (request.advancedAuthRequired) {
-            if (!this.client.ready) throw Error(`Request ${request.route} failed: client was not ready.`);
+            if (!this.client.ready) throw Error(LunifyErrors.ClientNotReady.replace('![[PATH]]', request.route));
             headers.Authorization = await this.client.credentials.getAuthorization();
         }
 

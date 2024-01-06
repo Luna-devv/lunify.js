@@ -1,4 +1,4 @@
-import { Lunify } from '../..';
+import { Lunify, LunifyErrors, Scopes } from '../..';
 import { ApiRefreshTokenResponse, ApiTokenResponse } from '../../../interfaces/oauth';
 
 export class UserOauth {
@@ -33,14 +33,14 @@ export class UserOauth {
     async refresh(refreshToken?: string) {
         if (refreshToken) this.refreshToken = refreshToken;
 
-        if (this.revoked) throw Error('Refresh token revoked');
-        if (!this.refreshToken) throw Error('No refresh token provided');
+        if (this.revoked) throw Error(LunifyErrors.TokenRevoked);
+        if (!this.refreshToken) throw Error(LunifyErrors.NoRefreshToken);
 
         const res = await this.client.oauth.refreshToken(this.refreshToken);
 
         if (!res) {
             this.revoked = true;
-            throw Error('User refresh token revoked');
+            throw Error(LunifyErrors.TokenRevoked);
         }
 
         this.accessToken = res.accessToken;
@@ -61,7 +61,7 @@ export class UserOauth {
     /**
      * Check if the access token is still valid (expires after 1 hour of creating, usually)
      */
-    async isValid() {
+    isValid() {
         if (this.expiresTimestamp < Date.now()) return false;
         return true;
     }

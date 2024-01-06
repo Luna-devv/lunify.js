@@ -29,3 +29,12 @@ export enum RequestDomain {
     Accounts = 'https://accounts.spotify.com/api',
     Api = 'https://api.spotify.com/v1'
 }
+
+export enum LunifyErrors {
+    TokenRevoked = 'User refresh token was revoked',
+    NoRefreshToken = 'No refresh token was provided to refresh users access token',
+    NoRedirectUri = 'No redirect uri was provided to manage oauth2 authorization, https://github.com/Luna-devv/lunify.js#initiate-lunifyjs',
+    ClientNotReady = 'Request "![[PATH]]" failed: client was not ready, https://github.com/Luna-devv/lunify.js#example'
+}
+
+export const userAgent = 'Lunify.js (https://github.com/Luna-devv/lunify.js)' as const;
