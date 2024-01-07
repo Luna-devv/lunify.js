@@ -36,7 +36,16 @@ export class UserOauth {
     }
 
     /**
-     * Refresh the spotify access token
+     * Refresh a spotify access token
+     * @param {string} refreshToken - oauth refresh token
+     * @example ```ts
+     * await access.refresh();
+     * ```
+     * Or if you want to use a specific refresh token, like from a database
+     * @example ```ts
+     * const refreshToken = ...; // from the database for example
+     * await access.refresh(refreshToken);
+     * ```
      */
     async refresh(refreshToken?: string) {
         if (refreshToken) this.refreshToken = refreshToken;

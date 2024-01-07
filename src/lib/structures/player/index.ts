@@ -17,6 +17,13 @@ export class Player {
         this.devices = new PlayerDeviceManager(this.client, this);
     }
 
+    /**
+     * Get current plackback (⚠️ This data is fetched from the api, not from a websocket, consider rate limits)
+     * @example ```ts
+     * const playing = player.now();
+     * console.log(playing)
+     * ```
+     */
     async now() {
 
         const res = await this.client.rest.get<ApiPlaybackState>('/me/player', {

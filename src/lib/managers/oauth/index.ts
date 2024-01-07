@@ -28,7 +28,11 @@ export class OauthManager extends EventEmitter {
 
     /**
      * Get a spotify access token from a oAuth code
-     * @param {string} code - oAuth code
+     * @param {string} code - oauth response query code
+     * @example ```ts
+     * const code = req.query.code;
+     * const access = await api.oauth.fetchToken(code);
+     * ```
      */
     async fetchToken(code: string) {
         if (!this.client.options.oauth.redirectUri) throw Error(LunifyErrors.NoRedirectUri);
@@ -53,7 +57,11 @@ export class OauthManager extends EventEmitter {
 
     /**
      * Refresh a spotify access token
-     * @param {string} refreshToken - oAuth refresh token
+     * @param {string} refreshToken - oauth refresh token
+     * @example ```ts
+     * const refreshToken = ...;
+     * await api.oauth.refreshToken(refreshToken);
+     * ```
      */
     async refreshToken(refreshToken: string) {
 

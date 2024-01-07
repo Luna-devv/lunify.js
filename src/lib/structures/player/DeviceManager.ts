@@ -10,6 +10,12 @@ export class PlayerDeviceManager {
         private player: Player,
     ) { }
 
+    /**
+     * Fetch all available devices for the user and current playback
+     * @example ```ts
+     * await player.devices.fetch();
+     * ```
+     */
     async fetch() {
 
         const res = await this.client.rest.get<{ devices: ApiDevice[] }>('/me/player/devices', {
@@ -25,6 +31,15 @@ export class PlayerDeviceManager {
         return devices;
     }
 
+    /**
+     * Transfer the current playback to provided device
+     * @param {string | string[]} device - id of the playback device
+     * @example ```ts
+     * const devices = await player.devices.fetch();
+     * const deviceId = devices[0].id;
+     * player.devices.transferPlaybackTo(deviceId);
+     * ```
+     */
     async transferPlaybackTo(device: string | string[]) {
 
         const finalDevices: string[] = [];

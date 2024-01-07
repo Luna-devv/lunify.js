@@ -28,7 +28,7 @@ export class PlayerDevice {
     }
 
     /**
-     * Refresh the spotify access token
+     * Transfer the current playback to this device
      * @returns Whenever the refresh was successfull or not
      */
     async transferPlaybackTo() {

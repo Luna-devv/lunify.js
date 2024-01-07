@@ -6,6 +6,9 @@ import { Player } from '../player';
 export * from './Oauth';
 
 export class PartialUser {
+    /**
+     * Control user playback
+     */
     public player: Player;
 
     constructor(
