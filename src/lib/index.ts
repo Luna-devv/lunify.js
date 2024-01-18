@@ -58,3 +58,4 @@ export class Lunify {
 export * from './managers';
 export * from './structures';
 export * from './Constants';
+export * as utils from './utils';
