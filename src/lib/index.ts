@@ -19,7 +19,7 @@ export class Lunify {
      */
     public ready: boolean;
 
-    constructor(public options: Required<Options>) {
+    constructor(public options: Options) {
         this.rest = new RestManager(this);
         this.oauth = new OauthManager(this);
         this.users = new UsersManager(this);

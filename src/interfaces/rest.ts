@@ -4,7 +4,7 @@ import { RequestDomain } from '../lib';
 export interface Options {
     clientId: string;
     clientSecret: string;
-    oauth: {
+    oauth?: {
         redirectUri: string;
     }
 }
