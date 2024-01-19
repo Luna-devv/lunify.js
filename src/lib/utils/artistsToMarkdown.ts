@@ -1,6 +1,12 @@
-import { PartialArtist } from '../structures';
+import { Artist, PartialArtist } from '../structures';
 
-export const aristsToMarkdown = (artists: PartialArtist[], max?: number) => {
+/**
+ * Converts an array of artists to markdown
+ * @param artists - An array of partial artists to convert to markdown
+ * @param max - How many artists to show before showing the remaining count
+ * @returns Markdown string
+ */
+export const aristsToMarkdown = (artists: (PartialArtist | Artist)[], max?: number) => {
     const arr = artists.map((artist) => `[${artist.name}](<https://open.spotify.com/artist/${artist.id}>)`);
 
     if (max && arr.length > max) {
