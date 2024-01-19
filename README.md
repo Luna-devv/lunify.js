@@ -177,3 +177,13 @@ app.listen({ host: 'localhost', port: 3000 }, (err, address) => {
 
 ## Documentation
 Read the code or use your IDEs intellisense :) 
+
+## Star History
+
+<a href="https://star-history.com/#Luna-devv/lunify.js&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Luna-devv/lunify.js&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Luna-devv/lunify.js&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Luna-devv/lunify.js&type=Date" />
+  </picture>
+</a>
