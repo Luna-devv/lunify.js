@@ -24,15 +24,15 @@ export class Player {
      * console.log(playing)
      * ```
      */
-    async now() {
+    async now(): Promise<CurrentPlayback | null> {
 
-        const res = await this.client.rest.get<ApiPlaybackState>('/me/player', {
+        const res = await this.client.rest.get<ApiPlaybackState | undefined>('/me/player', {
             headers: {
                 Authorization: await this.user.oauth.getAuthorization()
             }
         });
 
-        if (!res) return undefined;
+        if (!res) return null;
         return new CurrentPlayback(this.client, this.user, res);
     }
 
