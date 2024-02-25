@@ -11,7 +11,7 @@
         "oauth2",
         "music"
     ],
-    "version": "0.1.9",
+    "version": "0.1.11",
     "main": "dist/src/lib/index.js",
     "types": "dist/src/lib/index.d.js",
     "files": [

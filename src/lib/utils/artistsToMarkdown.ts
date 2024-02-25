@@ -6,8 +6,8 @@ import { Artist, PartialArtist } from '../structures';
  * @param max - How many artists to show before showing the remaining count
  * @returns Markdown string
  */
-export const aristsToMarkdown = (artists: (PartialArtist | Artist)[], max?: number) => {
-    const arr = artists.map((artist) => `[${artist.name}](<https://open.spotify.com/artist/${artist.id}>)`);
+export function aristsToMarkdown(artists: (PartialArtist | Artist)[], max?: number) {
+    const arr = artists.map((artist) => `[${escapeMarkdown(artist.name)}](<https://open.spotify.com/artist/${artist.id}>)`);
 
     if (max && arr.length > max) {
         const shownArists = arr.slice(0, max).join(', ');
@@ -17,4 +17,15 @@ export const aristsToMarkdown = (artists: (PartialArtist | Artist)[], max?: numb
     }
 
     return arr.join(', ');
-};
+}
+
+/**
+ * Escapes some common markdown characters in a string
+ * @param input - The input string
+ * @returns Markdown escaped string
+ */
+export function escapeMarkdown(input: string): string {
+    const markdownCharacters = /\\|`|\*|_|{|}|\[|\]|\(|\)|#|\+|-|\.|!/g;
+    const escapedInput = input.replace(markdownCharacters, '\\$&');
+    return escapedInput;
+}
