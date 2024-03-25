@@ -12,8 +12,9 @@ export class OauthManager extends EventEmitter {
     /**
      * Create a oAuth url for users to authorize
      * @param {Scopes[]} scopes - A list of spotify scopes {@link https://developer.spotify.com/documentation/web-api/concepts/scopes}
+     * @param {?string} state - If you want to use your own state use this 
      */
-    generateUrl(scopes: Scopes[]) {
+    generateUrl(scopes: Scopes[], state?: string) {
         if (!this.client.options.oauth.redirectUri) throw Error(LunifyErrors.NoRedirectUri);
 
         const params = new URLSearchParams();
@@ -21,7 +22,7 @@ export class OauthManager extends EventEmitter {
         params.append('client_id', this.client.options.clientId);
         params.append('redirect_uri', this.client.options.oauth.redirectUri);
         params.append('scope', scopes.join(' '));
-        params.append('state', crypto.randomUUID());
+        params.append('state', state || crypto.randomUUID());
 
         return 'https://accounts.spotify.com/authorize?' + params.toString();
     }
