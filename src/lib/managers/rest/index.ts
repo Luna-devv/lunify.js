@@ -69,7 +69,18 @@ export class RestManager {
             throw error;
         }
 
-        if (res.status < 200 || res.status >= 300) throw Error(res.status + ' ' + url + ': ' + await res.text());
+        if (res.status < 200 || res.status >= 300) {
+            const errorText = await res.text();
+            const error = new Error(res.status + ' ' + url + ': ' + errorText);
+
+            error.info = {
+                status: res.status,
+                url: url,
+                errorText: errorText
+            }; 
+
+            throw error;
+        }
 
         return {
             body: res.body,
