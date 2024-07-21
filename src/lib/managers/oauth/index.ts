@@ -12,7 +12,7 @@ export class OauthManager extends EventEmitter {
     /**
      * Create a oAuth url for users to authorize
      * @param {Scopes[]} scopes - A list of spotify scopes {@link https://developer.spotify.com/documentation/web-api/concepts/scopes}
-     * @param {?string} state - If you want to use your own state use this 
+     * @param {?string} state - If you want to use your own state use this
      */
     generateUrl(scopes: Scopes[], state?: string) {
         if (!this.client.options.oauth.redirectUri) throw Error(LunifyErrors.NoRedirectUri);

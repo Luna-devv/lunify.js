@@ -26,7 +26,6 @@ export class RestManager {
         }
 
         if (request.advancedAuthRequired) {
-            if (!this.client.ready) throw Error(LunifyErrors.ClientNotReady.replace('![[PATH]]', request.route));
             headers.Authorization = await this.client.credentials.getAuthorization();
         }
 
@@ -73,11 +72,12 @@ export class RestManager {
             const errorText = await res.text();
             const error = new Error(res.status + ' ' + url + ': ' + errorText);
 
+            // @ts-expect-error
             error.info = {
                 status: res.status,
                 url: url,
                 errorText: errorText
-            }; 
+            };
 
             throw error;
         }

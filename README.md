@@ -44,12 +44,6 @@ const api = new Lunify({
         redirectUri: 'http://10.0.0.50:7654/callback'
     }
 });
-
-// If you want access to not oauth2 related routes like tracks,
-// you need to fetch client credentials like bellow, we
-// recommend having that in the root of your project.
-
-await api.fetchCredentials();
 ```
 
 ### Oauth (login with spotify)
@@ -75,11 +69,6 @@ console.log(user.displayName)
 ```
 
 ### Getting tracks
-**If you haven't already**, you should put this at the root of your project to fetch your client's credentials.
-```ts
-await api.fetchCredentials();
-```
-
 Getting a single track, note that all fetched data gets cached to not spam the api as much
 ```ts
 const track = await api.tracks.fetch("4cOdK2wGLETKBW3PvgPWqT");
@@ -156,9 +145,6 @@ app.get('/me', async () => {
 // Fetch a track, provide a track as query param (don't forget to remove all of spotifies tracking queries from their links)
 // GET http://localhost:3000/track?track=https://open.spotify.com/track/0ZVjgfaC2Ptrod9v6p9KFP
 app.get('/track', async (req) => {
-    // or "api.fetchCredentials();" in the root of your project
-    if (!api.ready) await api.fetchCredentials();
-
     const trackId = (req.query as Record<string, string>).track?.split('/track/')?.[1]?.split('?')[0];
     if (!trackId) return 'No track id';
 
