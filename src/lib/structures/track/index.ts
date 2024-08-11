@@ -1,4 +1,5 @@
 import { Lunify } from '../..';
+import { ApiPlaylistOwner, ApiPlaylistTrack } from '../../../interfaces/playlist';
 import { ApiPartialTrack, ApiTrack } from '../../../interfaces/track';
 import { PartialAlbum } from '../album';
 import { PartialArtist } from '../artist';
@@ -66,4 +67,25 @@ export class Track extends PartialTrack {
         this.popularity = data.popularity;
     }
 
+}
+
+export class PlaylistTrack extends Track {
+    /*
+     * Will only be `null` in very old playlists.
+     */
+    public addedTimestamp: number | null;
+    /*
+     * Will only be `null` in very old playlists.
+     */
+    public addedBy: Omit<ApiPlaylistOwner, 'display_name'>;
+
+    constructor(
+        public client: Lunify,
+        data: ApiPlaylistTrack<ApiTrack>
+    ) {
+        super(client, data.track);
+
+        this.addedTimestamp = new Date(data.added_at).getTime() || null;
+        this.addedBy = data.added_by;
+    }
 }
