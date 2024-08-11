@@ -13,6 +13,7 @@ export class UserOauth {
 
     constructor(
         public client: Lunify,
+        // omiting "public user" due to "<OauthManager>.refreshToken(...)"
         data: ApiTokenResponse | ApiRefreshTokenResponse
     ) {
         this.refreshToken = null;

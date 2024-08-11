@@ -1,6 +1,6 @@
 import { Lunify, PartialTrack } from '../..';
 import { ApiAlbum, ApiPartialAlbum } from '../../../interfaces/album';
-import { ApiImage } from '../../../interfaces/user';
+import { ApiImage } from '../../../interfaces';
 import { Artist } from '../artist';
 
 export class PartialAlbum {

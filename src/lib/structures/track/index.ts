@@ -25,7 +25,7 @@ export class PartialTrack {
 
     constructor(
         public client: Lunify,
-        data?: Omit<ApiPartialTrack, 'album'> & { album?: ApiPartialTrack['album'] }
+        data: Omit<ApiPartialTrack, 'album'> & { album?: ApiPartialTrack['album'] }
     ) {
         if (data.album) this.album = new PartialAlbum(client, data.album);
 
@@ -58,7 +58,7 @@ export class Track extends PartialTrack {
 
     constructor(
         public client: Lunify,
-        data?: ApiTrack
+        data: ApiTrack
     ) {
         super(client, data);
 

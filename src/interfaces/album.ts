@@ -1,6 +1,6 @@
 import { ApiArtist } from './artist';
 import { ApiPartialTrack } from './track';
-import { ApiImage } from './user';
+import { ApiImage } from '.';
 
 export interface ApiPartialAlbum {
     album_type: 'album' | 'single' | 'compilation';

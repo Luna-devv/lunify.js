@@ -1,4 +1,4 @@
-import { ApiImage } from './user';
+import { ApiImage } from './';
 
 export interface ApiPartialArtist {
     external_urls: Record<string, string>;
