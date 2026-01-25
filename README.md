@@ -55,7 +55,7 @@ From the callback urls query params you get a `code` with is used to fetch users
 ```ts
 const access = await api.oauth.fetchToken(code);
 ```
-If you want to just play music or do other things with a user's player, you can create a [PartialUser](https://github.com/Luna-devv/lunify.js/blob/master/src/lib/structures/user/index.ts#L8) like that:
+If you want to just play music or do other things with a user's player, you can create a [PartialUser](https://github.com/shi-gg/lunify.js/blob/master/src/lib/structures/user/index.ts#L8) like that:
 ```ts
 const user = new PartialUser(api, access);
 user.player.play("4cOdK2wGLETKBW3PvgPWqT");
@@ -162,14 +162,14 @@ app.listen({ host: 'localhost', port: 3000 }, (err, address) => {
 ```
 
 ## Documentation
-Read the code or use your IDEs intellisense :) 
+Read the code or use your IDEs intellisense :)
 
 ## Star History
 
-<a href="https://star-history.com/#Luna-devv/lunify.js&Date">
+<a href="https://star-history.com/#shi-gg/lunify.js&Date">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Luna-devv/lunify.js&type=Date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Luna-devv/lunify.js&type=Date" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Luna-devv/lunify.js&type=Date" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=shi-gg/lunify.js&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=shi-gg/lunify.js&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=shi-gg/lunify.js&type=Date" />
   </picture>
 </a>

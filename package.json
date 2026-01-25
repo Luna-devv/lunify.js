@@ -11,30 +11,30 @@
         "oauth2",
         "music"
     ],
-    "version": "0.2.0",
+    "version": "0.2.2",
     "main": "dist/src/lib/index.js",
     "types": "dist/src/lib/index.d.ts",
     "files": [
         "/dist/src"
     ],
-    "license": "GPL-3.0 license",
-    "author": "Luna <luna@waya.one> (http://lunish.nl/luna/)",
-    "url": "https://github.com/Luna-devv/lunify.js",
+    "license": "GPL-3.0",
+    "author": "Luna Seemann <luna@wamellow.com> (https://shi.gg)",
+    "url": "https://github.com/shi-gg/lunify.js",
     "repository": {
         "type": "git",
-        "url": "https://github.com/Luna-devv/lunify.js"
+        "url": "https://github.com/shi-gg/lunify.js"
     },
     "dependencies": {
-        "@discordjs/collection": "^2.0.0"
+        "@discordjs/collection": "^2.1.1"
     },
     "devDependencies": {
-        "@types/node": "^20.11.30",
-        "@types/node-fetch": "^2.6.11",
-        "@typescript-eslint/eslint-plugin": "^6.21.0",
-        "@typescript-eslint/parser": "^6.21.0",
-        "dotenv": "^16.4.5",
-        "eslint": "^8.57.0",
-        "fastify": "^4.26.2",
-        "typescript": "^4.9.5"
+        "@types/node": "^25.0.10",
+        "@types/node-fetch": "^2.6.13",
+        "@typescript-eslint/eslint-plugin": "^8.53.1",
+        "@typescript-eslint/parser": "^8.53.1",
+        "dotenv": "^17.2.3",
+        "eslint": "^9.39.2",
+        "fastify": "^5.7.1",
+        "typescript": "^5.9.3"
     }
 }
