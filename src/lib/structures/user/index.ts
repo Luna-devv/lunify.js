@@ -1,7 +1,8 @@
-import { Lunify } from '../..';
-import { ApiImage, ApiUser } from '../../../interfaces/user';
+import { Lunify, UserPlaylistsManager } from '../..';
+import { ApiUser } from '../../../interfaces/user';
 import { UserOauth } from './Oauth';
 import { Player } from '../player';
+import { ApiImage } from '../../../interfaces';
 
 export * from './Oauth';
 
@@ -10,24 +11,25 @@ export class PartialUser {
      * Control user playback
      */
     public player: Player;
+    public playlists: UserPlaylistsManager;
 
     constructor(
         public client: Lunify,
         public oauth: UserOauth,
     ) {
         this.player = new Player(client, this);
+        this.playlists = new UserPlaylistsManager(client, this);
     }
 
 }
 
 export class User extends PartialUser {
-
     public country?: string;
     public displayName: string | null;
     public email?: string;
-    public explicitContent?: {
-        enabled: boolean;
-        locked: boolean;
+    public explicitContent: {
+        enabled: boolean | null;
+        locked: boolean | null;
     };
     public externalUrls: Record<string, string>;
     public followers: {
@@ -51,7 +53,7 @@ export class User extends PartialUser {
         this.email = data.email;
         this.explicitContent = { enabled: data.explicit_content?.filter_enabled || null, locked: data.explicit_content?.filter_locked || null };
         this.externalUrls = data.external_urls;
-        this.followers = { url: data.followers?.href, total: data.followers?.total };
+        this.followers = { url: data.followers.href, total: data.followers.total };
         this.url = data.href;
         this.id = data.id;
         this.images = data.images;

@@ -2,6 +2,8 @@ import { Lunify, UserOauth, User } from '../..';
 import { ApiUser } from '../../../interfaces/user';
 import { CacheManager } from '../cache';
 
+export * from './Playlists';
+
 export class UsersManager {
     public cache: CacheManager<string, User>;
 

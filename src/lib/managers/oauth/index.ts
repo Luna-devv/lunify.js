@@ -1,13 +1,10 @@
-import { EventEmitter } from 'stream';
 import { ApiTokenResponse } from '../../../interfaces/oauth';
 import { Lunify, LunifyErrors, RequestDomain, Scopes } from '../..';
 import { UserOauth } from '../../structures/user';
 
-export class OauthManager extends EventEmitter {
+export class OauthManager {
 
-    constructor(public client: Lunify) {
-        super();
-    }
+    constructor(public client: Lunify) {}
 
     /**
      * Create a oAuth url for users to authorize

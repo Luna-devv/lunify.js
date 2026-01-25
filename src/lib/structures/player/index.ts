@@ -1,11 +1,11 @@
 import { Lunify } from '../..';
 import { ApiPlaybackState } from '../../../interfaces/player';
+import { PlayerDeviceManager } from '../../managers/devices';
 import { PartialUser, User } from '../user';
 import { CurrentPlayback } from './CurrentPlayback';
-import { PlayerDeviceManager } from './DeviceManager';
 
 export * from './Device';
-export * from './DeviceManager';
+export * from './CurrentPlayback';
 
 export class Player {
     public devices: PlayerDeviceManager;
@@ -33,7 +33,7 @@ export class Player {
         });
 
         if (!res) return null;
-        return new CurrentPlayback(this.client, this.user, res);
+        return new CurrentPlayback(this.client, this, res);
     }
 
     /**

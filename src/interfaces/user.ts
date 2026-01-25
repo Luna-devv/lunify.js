@@ -1,3 +1,5 @@
+import { ApiImage } from '.';
+
 export interface ApiUser {
     country?: string;
     display_name: string | null;
@@ -15,10 +17,4 @@ export interface ApiUser {
     id: string;
     images: ApiImage[];
     product?: 'premium' | 'free' | 'open';
-}
-
-export interface ApiImage {
-    url: string;
-    height: number;
-    width: number;
 }

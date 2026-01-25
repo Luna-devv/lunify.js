@@ -1,13 +1,11 @@
-import { Lunify } from '../..';
-import { Player } from '.';
+import { Lunify, Player, PlayerDevice } from '../..';
 import { ApiDevice } from '../../../interfaces/player';
-import { PlayerDevice } from './Device';
 
 export class PlayerDeviceManager {
 
     constructor(
         public client: Lunify,
-        private player: Player,
+        public player: Player,
     ) { }
 
     /**
@@ -24,11 +22,9 @@ export class PlayerDeviceManager {
             }
         });
 
-        const devices: PlayerDevice[] = [];
-
-        for (const apiDevice of res.devices) devices.push(new PlayerDevice(this.client, this.player.user, apiDevice));
-
-        return devices;
+        return res.devices.map((device) =>
+            new PlayerDevice(this.client, this.player, device)
+        );
     }
 
     /**
@@ -40,23 +36,16 @@ export class PlayerDeviceManager {
      * player.devices.transferPlaybackTo(deviceId);
      * ```
      */
-    async transferPlaybackTo(device: string | string[]) {
-
-        const finalDevices: string[] = [];
-
-        if (typeof device !== 'string') {
-            for (const d of device) finalDevices.push(d);
-        }
-        else {
-            finalDevices.push(device);
-        }
+    async transferPlaybackTo(deviceId: string | string[]) {
 
         await this.client.rest.put('/me/player', {
             headers: {
                 Authorization: await this.player.user.oauth.getAuthorization()
             },
             body: {
-                device_ids: finalDevices
+                device_ids: typeof deviceId === 'string'
+                    ? [deviceId]
+                    : deviceId
             }
         });
 
