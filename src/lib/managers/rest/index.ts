@@ -1,5 +1,7 @@
-import { Lunify, LunifyErrors, RequestDomain, userAgent } from '../..';
-import { InternalRequest, RequestData, RequestMethod, ResponseLike, RouteLike } from '../../../interfaces/rest';
+import type { InternalRequest, RequestData, ResponseLike, RouteLike } from "../../../interfaces/rest";
+import { RequestMethod } from "../../../interfaces/rest";
+import type { Lunify } from "../..";
+import { LunifyErrors, RequestDomain, userAgent } from "../..";
 
 export class RestManager {
     public basicAuthorization: string | null;
@@ -13,7 +15,7 @@ export class RestManager {
     }
 
     private makeSecretString(clientId: string, clientSecret: string) {
-        return 'Basic ' + Buffer.from(clientId + ':' + clientSecret).toString('base64');
+        return "Basic " + Buffer.from(clientId + ":" + clientSecret).toString("base64");
     }
 
     setBasicAuthorization(clientId: string, clientSecret: string) {
@@ -21,51 +23,51 @@ export class RestManager {
         return this;
     }
 
-    private resolveUrl(domain: RequestDomain, route: RouteLike, query?: string): string {
-        return `${domain || RequestDomain.Api}${route}${query ? `?${query}` : ''}`;
+    private resolveUrl(domain: RequestDomain | undefined, route: RouteLike, query?: string): string {
+        return `${domain || RequestDomain.Api}${route}${query ? `?${query}` : ""}`;
     }
 
     private async resolveRequest(request: InternalRequest): Promise<{ url: string; fetchOptions: RequestInit; }> {
-        let query = '';
+        let query = "";
 
         if (request.query) {
             const resolvedQuery = new URLSearchParams(Object.fromEntries(Object.entries(request.query).map(([key, value]) => [key, value.toString()]))).toString();
-            if (resolvedQuery !== '') query = resolvedQuery;
+            if (resolvedQuery !== "") query = resolvedQuery;
         }
 
         const headers = {
-            'User-Agent': userAgent.trim()
+            "User-Agent": userAgent.trim()
         } as Record<string, string>;
 
         if (request.authRequired) {
-            if (!this.basicAuthorization) throw Error(LunifyErrors.RequireBasicAuth);
+            if (!this.basicAuthorization) throw new Error(LunifyErrors.RequireBasicAuth);
             headers.Authorization = this.basicAuthorization;
         }
 
         if (request.advancedAuthRequired) {
-            if (!this.client) throw Error(LunifyErrors.RequireAdvancedAuth);
+            if (!this.client) throw new Error(LunifyErrors.RequireAdvancedAuth);
             headers.Authorization = await this.client.credentials.getAuthorization();
         }
 
         const url = this.resolveUrl(request.domain, request.route, query);
         const method = request.method.toUpperCase();
-        const contentType = request.headers?.['Content-Type']?.toLowerCase();
+        const contentType = request.headers?.["Content-Type"]?.toLowerCase();
 
-        let finalBody: RequestInit['body'];
+        let finalBody: RequestInit["body"];
         if (
             request.body &&
-            typeof request.body !== 'string' &&
-            (!contentType || contentType === 'application/json')
+            typeof request.body !== "string" &&
+            (!contentType || contentType === "application/json")
         ) {
             finalBody = JSON.stringify(request.body);
         }
 
-        if (!finalBody) finalBody = request.body as RequestInit['body'];
+        if (!finalBody) finalBody = request.body as RequestInit["body"];
 
         return {
             url,
             fetchOptions: {
-                body: ['GET', 'HEAD'].includes(method) ? undefined : finalBody,
+                body: ["GET", "HEAD"].includes(method) ? undefined : finalBody,
                 headers: { ...request.headers, ...headers },
                 method
             }
@@ -79,8 +81,8 @@ export class RestManager {
             res = await fetch(url, options);
         } catch (error: unknown) {
             if (!(error instanceof Error)) throw error;
-            if ((('code' in error && error.code === 'ECONNRESET') || error.message.includes('ECONNRESET'))) {
-                return null;
+            if ((("code" in error && error.code === "ECONNRESET") || error.message.includes("ECONNRESET"))) {
+                throw error;
             }
 
             throw error;
@@ -88,13 +90,13 @@ export class RestManager {
 
         if (res.status < 200 || res.status >= 300) {
             const errorText = await res.text();
-            const error = new Error(res.status + ' ' + url + ': ' + errorText);
+            const error = new Error(res.status + " " + url + ": " + errorText);
 
-            // @ts-expect-error
+            // @ts-expect-error - Error does not natively support info property
             error.info = {
                 status: res.status,
-                url: url,
-                errorText: errorText
+                url,
+                errorText
             };
 
             throw error;
@@ -119,11 +121,11 @@ export class RestManager {
     }
 
     private async parseResponse<T>(res: ResponseLike): Promise<T> {
-        const contentType = res.headers.get('content-type');
+        const contentType = res.headers.get("content-type");
 
-        if (contentType?.startsWith('application/json')) return await res.json() as T;
-        if (contentType?.startsWith('text/html')) return res.text() as T;
-        if (contentType?.startsWith('image')) return await res.arrayBuffer() as T;
+        if (contentType?.startsWith("application/json")) return await res.json() as T;
+        if (contentType?.startsWith("text/html")) return res.text() as T;
+        if (contentType?.startsWith("image")) return await res.arrayBuffer() as T;
 
         return await res.text() as T;
     }

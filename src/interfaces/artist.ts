@@ -1,11 +1,11 @@
-import { ApiImage } from './';
+import type { ApiImage } from ".";
 
 export interface ApiPartialArtist {
     external_urls: Record<string, string>;
     href: string;
     id: string;
     name: string;
-    type: 'artist';
+    type: "artist";
     uri: string;
 }
 

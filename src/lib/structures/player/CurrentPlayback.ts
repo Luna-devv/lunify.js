@@ -1,13 +1,14 @@
-import { Lunify, Track } from '../..';
-import { ApiPlaybackState, CurrentlyPlayingType, PlayerContextType } from '../../../interfaces/player';
-import { ApiTrack } from '../../../interfaces/track';
-import { PlayerDevice } from './Device';
-import { Player } from '.';
-import { ApiEpisode } from '../../../interfaces/episode';
+import { PlayerDevice } from "./Device";
+import type { ApiEpisode } from "../../../interfaces/episode";
+import type { ApiPlaybackState, CurrentlyPlayingType, PlayerContextType } from "../../../interfaces/player";
+import type { Lunify } from "../..";
+import { Track } from "../..";
+
+import type { Player } from ".";
 
 export class CurrentPlayback {
     public device: PlayerDevice;
-    public repeat: 'track' | 'context' | false;
+    public repeat: "track" | "context" | false;
     public shuffle: boolean;
     public context?: {
         type: PlayerContextType;
@@ -18,7 +19,7 @@ export class CurrentPlayback {
     public timestamp: number;
     public progress: number;
     public playing: boolean;
-    public item: Track | ApiEpisode;
+    public item: Track | ApiEpisode | null;
     public playingType: CurrentlyPlayingType;
 
     constructor(
@@ -27,16 +28,17 @@ export class CurrentPlayback {
         data: ApiPlaybackState
     ) {
         this.device = new PlayerDevice(this.client, player, data.device);
-        this.repeat = data.repeat_state !== 'off' ? data.repeat_state : false;
+        this.repeat = data.repeat_state === "off" ? false : data.repeat_state;
         this.shuffle = data.shuffle_state;
         this.context = data.context
             ? { type: data.context.type, url: data.context.href, externalUrls: data.context.external_urls, uri: data.context.uri }
-            : null;
+            : undefined;
         this.timestamp = data.timestamp;
         this.progress = data.progress_ms;
         this.playing = data.is_playing;
 
-        if (data.item.type === 'track') this.item = new Track(client, data.item as ApiTrack);
+        if (!data.item) this.item = null;
+        else if (data.item.type === "track") this.item = new Track(client, data.item);
         else this.item = data.item;
 
         this.playingType = data.currently_playing_type;

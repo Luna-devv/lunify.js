@@ -1,9 +1,9 @@
-import { Options } from '../interfaces/rest';
-import { CredentialsManager } from './managers/credentials';
-import { OauthManager } from './managers/oauth';
-import { RestManager } from './managers/rest';
-import { TracksManager } from './managers/tracks';
-import { UsersManager } from './managers/users';
+import { CredentialsManager } from "./managers/credentials";
+import { OauthManager } from "./managers/oauth";
+import { RestManager } from "./managers/rest";
+import { TracksManager } from "./managers/tracks";
+import { UsersManager } from "./managers/users";
+import type { Options } from "../interfaces/rest";
 
 export class Lunify {
     public credentials: CredentialsManager;
@@ -21,7 +21,7 @@ export class Lunify {
     }
 }
 
-export * from './managers';
-export * from './structures';
-export * from './Constants';
-export * as utils from './utils';
+export * from "./Constants";
+export * from "./managers";
+export * from "./structures";
+export * as utils from "./utils";

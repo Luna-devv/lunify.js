@@ -1,8 +1,9 @@
-import { Lunify, UserOauth, User } from '../..';
-import { ApiUser } from '../../../interfaces/user';
-import { CacheManager } from '../cache';
+import type { ApiUser } from "../../../interfaces/user";
+import type { Lunify, UserOauth } from "../..";
+import { User } from "../..";
+import { CacheManager } from "../cache";
 
-export * from './Playlists';
+export * from "./Playlists";
 
 export class UsersManager {
     public cache: CacheManager<string, User>;
@@ -33,7 +34,7 @@ export class UsersManager {
             if (user) return user;
         }
 
-        const res = await this.client.rest.get<ApiUser>('/me', {
+        const res = await this.client.rest.get<ApiUser>("/me", {
             headers: {
                 Authorization: await access.getAuthorization()
             }

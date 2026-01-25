@@ -1,18 +1,18 @@
-import { ApiTrack } from './track';
-import { ApiEpisode } from './episode';
+import type { ApiEpisode } from "./episode";
+import type { ApiTrack } from "./track";
 
 export enum PlayerContextType {
-    Artist = 'artist',
-    Playlist = 'playlist',
-    Album = 'album',
-    Show = 'show',
+    Artist = "artist",
+    Playlist = "playlist",
+    Album = "album",
+    Show = "show"
 }
 
 export enum CurrentlyPlayingType {
-    Track = 'track',
-    Episode = 'episode',
+    Track = "track",
+    Episode = "episode",
     // when not even spotify knows what you're playing, you music taste might suck
-    Unknown = 'unknown'
+    Unknown = "unknown"
 }
 
 export interface ApiDevice {
@@ -28,7 +28,7 @@ export interface ApiDevice {
 
 export interface ApiPlaybackState {
     device: ApiDevice;
-    repeat_state: 'off' | 'track' | 'context';
+    repeat_state: "off" | "track" | "context";
     shuffle_state: boolean;
     context?: {
         type: PlayerContextType;
@@ -42,15 +42,15 @@ export interface ApiPlaybackState {
     item?: ApiTrack | ApiEpisode;
     currently_playing_type: CurrentlyPlayingType;
     actions: {
-        interrupting_playback: boolean
-        pausing: boolean
-        resuming: boolean
-        seeking: boolean
-        skipping_next: boolean
-        skipping_prev: boolean
-        toggling_repeat_context: boolean
-        toggling_shuffle: boolean
-        toggling_repeat_track: boolean
-        transferring_playback: boolean
+        interrupting_playback: boolean;
+        pausing: boolean;
+        resuming: boolean;
+        seeking: boolean;
+        skipping_next: boolean;
+        skipping_prev: boolean;
+        toggling_repeat_context: boolean;
+        toggling_shuffle: boolean;
+        toggling_repeat_track: boolean;
+        transferring_playback: boolean;
     };
 }

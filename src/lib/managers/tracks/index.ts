@@ -1,8 +1,8 @@
-import { Lunify } from '../..';
-import { StructureFetchOptions } from '../../../interfaces/rest';
-import { ApiTrack } from '../../../interfaces/track';
-import { Track } from '../../structures/track';
-import { CacheManager } from '../cache';
+import type { StructureFetchOptions } from "../../../interfaces/rest";
+import type { ApiTrack } from "../../../interfaces/track";
+import type { Lunify } from "../..";
+import { Track } from "../../structures/track";
+import { CacheManager } from "../cache";
 
 export class TracksManager {
     public cache: CacheManager<string, Track>;
@@ -28,7 +28,7 @@ export class TracksManager {
             if (track) return track;
         }
 
-        const res = await this.client.rest.get<ApiTrack>('/tracks/' + trackId, {
+        const res = await this.client.rest.get<ApiTrack>("/tracks/" + trackId, {
             advancedAuthRequired: true
         });
 
@@ -52,14 +52,17 @@ export class TracksManager {
         let tracks: Track[] = [];
 
         if (!options?.force) {
-            for await (const trackId of trackIds) tracks.push(this.cache.get(trackId));
-            if (tracks.filter((track) => track).length === trackIds.length) return tracks;
+            for (const trackId of trackIds) {
+                const item = this.cache.get(trackId);
+                if (item) tracks.push(item);
+            }
+            if (tracks.length === trackIds.length) return tracks;
         }
 
         tracks = [];
-        const res = await this.client.rest.get<{ tracks: ApiTrack[] }>('/tracks', {
+        const res = await this.client.rest.get<{ tracks: ApiTrack[]; }>("/tracks", {
             query: {
-                ids: trackIds.join(',')
+                ids: trackIds.join(",")
             },
             advancedAuthRequired: true
         });

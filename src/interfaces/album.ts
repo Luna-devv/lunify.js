@@ -1,9 +1,10 @@
-import { ApiArtist } from './artist';
-import { ApiPartialTrack } from './track';
-import { ApiImage } from '.';
+import type { ApiArtist } from "./artist";
+import type { ApiPartialTrack } from "./track";
+
+import type { ApiImage } from ".";
 
 export interface ApiPartialAlbum {
-    album_type: 'album' | 'single' | 'compilation';
+    album_type: "album" | "single" | "compilation";
     total_tracks: number;
     available_markets: string[];
     external_urls: Record<string, string>;
@@ -12,9 +13,9 @@ export interface ApiPartialAlbum {
     images: ApiImage[];
     name: string;
     release_date: string;
-    release_date_precision: 'year' | 'month' | 'day';
+    release_date_precision: "year" | "month" | "day";
     restrictions: {
-        reason: 'market' | 'product' | 'explicit';
+        reason: "market" | "product" | "explicit";
     };
     type: string;
     uri: string;
@@ -29,12 +30,12 @@ export interface ApiAlbum extends ApiPartialAlbum {
         offset: number;
         previous: string | null;
         total: number;
-        items: (Omit<ApiPartialTrack, 'album'>)[];
-    }
+        items: (Omit<ApiPartialTrack, "album">)[];
+    };
     copyrights: {
         text: string;
-        type: 'C' | 'P'
-    }[]
+        type: "C" | "P";
+    }[];
     external_ids: Record<string, string>;
     genres: string[];
     label: string;

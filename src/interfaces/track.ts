@@ -1,5 +1,5 @@
-import { ApiPartialAlbum } from './album';
-import { ApiPartialArtist } from './artist';
+import type { ApiPartialAlbum } from "./album";
+import type { ApiPartialArtist } from "./artist";
 
 export interface ApiPartialTrack {
     album: ApiPartialAlbum;
@@ -14,12 +14,12 @@ export interface ApiPartialTrack {
     is_playable: boolean;
     linked_from: Record<string, string>;
     restrictions: {
-        reason: 'market' | 'product' | 'explicit';
+        reason: "market" | "product" | "explicit";
     };
     name: string;
     preview_url: string | null;
     track_number: number;
-    type: 'track';
+    type: "track";
     uri: string;
     is_local: boolean;
 }

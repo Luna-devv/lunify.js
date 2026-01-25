@@ -1,4 +1,4 @@
-import { ApiImage } from '.';
+import type { ApiImage } from ".";
 
 export interface ApiUser {
     country?: string;
@@ -16,5 +16,5 @@ export interface ApiUser {
     href: string;
     id: string;
     images: ApiImage[];
-    product?: 'premium' | 'free' | 'open';
+    product?: "premium" | "free" | "open";
 }

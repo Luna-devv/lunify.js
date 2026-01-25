@@ -1,8 +1,8 @@
-import { Lunify } from '../..';
-import { ApiPlaylistOwner, ApiPlaylistTrack } from '../../../interfaces/playlist';
-import { ApiPartialTrack, ApiTrack } from '../../../interfaces/track';
-import { PartialAlbum } from '../album';
-import { PartialArtist } from '../artist';
+import type { ApiPlaylistOwner, ApiPlaylistTrack } from "../../../interfaces/playlist";
+import type { ApiPartialTrack, ApiTrack } from "../../../interfaces/track";
+import type { Lunify } from "../..";
+import { PartialAlbum } from "../album";
+import { PartialArtist } from "../artist";
 
 export class PartialTrack {
     public album: PartialAlbum;
@@ -16,17 +16,17 @@ export class PartialTrack {
     public id: string;
     public playable: boolean;
     public linkedFrom: Record<string, string>;
-    public restrictions: ApiPartialTrack['restrictions']['reason'] | null;
+    public restrictions: ApiPartialTrack["restrictions"]["reason"] | null;
     public name: string;
     public previewUrl: string | null;
     public track: number;
-    public type: 'track';
+    public type: "track";
     public uri: string;
     public local: boolean;
 
     constructor(
         public client: Lunify,
-        data: Omit<ApiPartialTrack, 'album'> & { album?: ApiPartialTrack['album'] }
+        data: Omit<ApiPartialTrack, "album"> & { album?: ApiPartialTrack["album"]; }
     ) {
         if (data.album) this.album = new PartialAlbum(client, data.album);
 
@@ -70,14 +70,10 @@ export class Track extends PartialTrack {
 }
 
 export class PlaylistTrack extends Track {
-    /*
-     * Will only be `null` in very old playlists.
-     */
+    // Will only be `null` in very old playlists.
     public addedTimestamp: number | null;
-    /*
-     * Will only be `null` in very old playlists.
-     */
-    public addedBy: Omit<ApiPlaylistOwner, 'display_name'>;
+    // Will only be `null` in very old playlists.
+    public addedBy: Omit<ApiPlaylistOwner, "display_name"> | null;
 
     constructor(
         public client: Lunify,
@@ -85,7 +81,7 @@ export class PlaylistTrack extends Track {
     ) {
         super(client, data.track);
 
-        this.addedTimestamp = new Date(data.added_at).getTime() || null;
+        this.addedTimestamp = data.added_at ? new Date(data.added_at).getTime() : null;
         this.addedBy = data.added_by;
     }
 }

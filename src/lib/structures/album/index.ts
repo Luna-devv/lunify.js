@@ -1,7 +1,8 @@
-import { Lunify, PartialTrack } from '../..';
-import { ApiAlbum, ApiPartialAlbum } from '../../../interfaces/album';
-import { ApiImage } from '../../../interfaces';
-import { Artist } from '../artist';
+import type { ApiImage } from "../../../interfaces";
+import type { ApiAlbum, ApiPartialAlbum } from "../../../interfaces/album";
+import type { Lunify } from "../..";
+import { PartialTrack } from "../..";
+import { Artist } from "../artist";
 
 export class PartialAlbum {
     public totalTracks: number;
@@ -12,15 +13,15 @@ export class PartialAlbum {
     public images: ApiImage[];
     public name: string;
     public release: Date;
-    public releasePrecision: ApiPartialAlbum['release_date_precision'];
-    public restrictions: ApiPartialAlbum['restrictions']['reason'] | null;
-    public type: ApiPartialAlbum['album_type'];
+    public releasePrecision: ApiPartialAlbum["release_date_precision"];
+    public restrictions: ApiPartialAlbum["restrictions"]["reason"] | null;
+    public type: ApiPartialAlbum["album_type"];
     public uri: string;
     public artists: Artist[];
 
     constructor(
         public client: Lunify,
-        data?: ApiPartialAlbum
+        data: ApiPartialAlbum
     ) {
         this.totalTracks = data.total_tracks;
         this.markets = data.available_markets;
@@ -41,8 +42,8 @@ export class PartialAlbum {
 }
 
 export class Album extends PartialAlbum {
-    public tracks: Omit<Omit<ApiAlbum['tracks'], 'href'>, 'items'> & { url: string; items: PartialTrack[] };
-    public copyrights: ApiAlbum['copyrights'];
+    public tracks: Omit<Omit<ApiAlbum["tracks"], "href">, "items"> & { url: string; items: PartialTrack[]; };
+    public copyrights: ApiAlbum["copyrights"];
     public externalIds: Record<string, string>;
     public genres: string[];
     public label: string;
@@ -50,7 +51,7 @@ export class Album extends PartialAlbum {
 
     constructor(
         public client: Lunify,
-        data?: ApiAlbum
+        data: ApiAlbum
     ) {
         super(client, data);
 

@@ -1,1 +1,1 @@
-export * from './artistsToMarkdown';
+export * from "./artists-to-markdown";

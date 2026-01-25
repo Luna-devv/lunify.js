@@ -1,16 +1,16 @@
 {
     "compilerOptions": {
         "module": "CommonJS",
-        "target": "ES2016",
+        "target": "ES2024",
         "sourceMap": true,
         "outDir": "./dist",
         "noImplicitAny": true,
         "declaration": true,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "strictNullChecks": true
     },
     "include": [
-        "src/**/*",
-        "test/**/*"
+        "src/**/*"
     ],
     "exclude": [
         "node_modules"

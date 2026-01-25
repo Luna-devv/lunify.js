@@ -1,18 +1,18 @@
-import { Lunify } from '../..';
-import { ApiPlaybackState } from '../../../interfaces/player';
-import { PlayerDeviceManager } from '../../managers/devices';
-import { PartialUser, User } from '../user';
-import { CurrentPlayback } from './CurrentPlayback';
+import { CurrentPlayback } from "./CurrentPlayback";
+import type { ApiPlaybackState } from "../../../interfaces/player";
+import type { Lunify } from "../..";
+import { PlayerDeviceManager } from "../../managers/devices";
+import type { PartialUser, User } from "../user";
 
-export * from './Device';
-export * from './CurrentPlayback';
+export * from "./CurrentPlayback";
+export * from "./Device";
 
 export class Player {
     public devices: PlayerDeviceManager;
 
     constructor(
         public client: Lunify,
-        public user: User | PartialUser,
+        public user: User | PartialUser
     ) {
         this.devices = new PlayerDeviceManager(this.client, this);
     }
@@ -26,7 +26,7 @@ export class Player {
      */
     async now(): Promise<CurrentPlayback | null> {
 
-        const res = await this.client.rest.get<ApiPlaybackState | undefined>('/me/player', {
+        const res = await this.client.rest.get<ApiPlaybackState | undefined>("/me/player", {
             headers: {
                 Authorization: await this.user.oauth.getAuthorization()
             }
@@ -47,14 +47,13 @@ export class Player {
 
         const finalTracks: string[] = [];
 
-        if (typeof trackId !== 'string') {
-            for (const t of trackId) finalTracks.push('spotify:track:' + t);
-        }
-        else {
-            finalTracks.push('spotify:track:' + trackId);
+        if (typeof trackId === "string") {
+            finalTracks.push("spotify:track:" + trackId);
+        } else {
+            for (const t of trackId) finalTracks.push("spotify:track:" + t);
         }
 
-        await this.client.rest.put('/me/player/play', {
+        await this.client.rest.put("/me/player/play", {
             headers: {
                 Authorization: await this.user.oauth.getAuthorization()
             },
@@ -75,7 +74,7 @@ export class Player {
      */
     async resume() {
 
-        await this.client.rest.put('/me/player/play', {
+        await this.client.rest.put("/me/player/play", {
             headers: {
                 Authorization: await this.user.oauth.getAuthorization()
             }
@@ -92,7 +91,7 @@ export class Player {
      */
     async stop() {
 
-        await this.client.rest.put('/me/player/pause', {
+        await this.client.rest.put("/me/player/pause", {
             headers: {
                 Authorization: await this.user.oauth.getAuthorization()
             }
@@ -109,7 +108,7 @@ export class Player {
      */
     async skip() {
 
-        await this.client.rest.post('/me/player/next', {
+        await this.client.rest.post("/me/player/next", {
             headers: {
                 Authorization: await this.user.oauth.getAuthorization()
             }
@@ -126,7 +125,7 @@ export class Player {
      */
     async rewind() {
 
-        await this.client.rest.post('/me/player/previous', {
+        await this.client.rest.post("/me/player/previous", {
             headers: {
                 Authorization: await this.user.oauth.getAuthorization()
             }
@@ -144,7 +143,7 @@ export class Player {
      */
     async seekTo(position: number) {
 
-        await this.client.rest.put('/me/player/seek', {
+        await this.client.rest.put("/me/player/seek", {
             headers: {
                 Authorization: await this.user.oauth.getAuthorization()
             },
@@ -168,14 +167,14 @@ export class Player {
      * player.repeat(false);
      * ```
      */
-    async repeat(mode: 'track' | 'context' | false) {
+    async repeat(mode: "track" | "context" | false) {
 
-        await this.client.rest.put('/me/player/repeat', {
+        await this.client.rest.put("/me/player/repeat", {
             headers: {
                 Authorization: await this.user.oauth.getAuthorization()
             },
             query: {
-                state: mode || 'off'
+                state: mode || "off"
             }
         });
 
@@ -191,7 +190,7 @@ export class Player {
      */
     async volumeTo(percentage: number) {
 
-        await this.client.rest.put('/me/player/volume', {
+        await this.client.rest.put("/me/player/volume", {
             headers: {
                 Authorization: await this.user.oauth.getAuthorization()
             },
@@ -212,7 +211,7 @@ export class Player {
      */
     async shuffle(state: boolean) {
 
-        await this.client.rest.put('/me/player/shuffle', {
+        await this.client.rest.put("/me/player/shuffle", {
             headers: {
                 Authorization: await this.user.oauth.getAuthorization()
             },

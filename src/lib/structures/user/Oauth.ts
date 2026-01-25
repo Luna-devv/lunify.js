@@ -1,5 +1,6 @@
-import { Lunify, LunifyErrors, Scopes } from '../..';
-import { ApiRefreshTokenResponse, ApiTokenResponse } from '../../../interfaces/oauth';
+import type { ApiRefreshTokenResponse, ApiTokenResponse } from "../../../interfaces/oauth";
+import type { Lunify } from "../..";
+import { LunifyErrors, Scopes } from "../..";
 
 export class UserOauth {
     public accessToken: string;
@@ -17,19 +18,19 @@ export class UserOauth {
         data: ApiTokenResponse | ApiRefreshTokenResponse
     ) {
         this.refreshToken = null;
-        if ('refresh_token' in data) this.refreshToken = data.refresh_token;
+        if ("refresh_token" in data) this.refreshToken = data.refresh_token;
 
         this.accessToken = data.access_token;
         this.tokenType = data.token_type;
         this.scope = this.convertScopesToStringArray(data.scope);
-        this.expiresIn = data.expires_in * 1000;
-        this.expiresTimestamp = data.created_timestamp + data.expires_in * 1000;
+        this.expiresIn = data.expires_in * 1_000;
+        this.expiresTimestamp = data.created_timestamp + data.expires_in * 1_000;
         this.createdTimestamp = data.created_timestamp;
         this.revoked = false;
     }
 
     private convertScopesToStringArray(scopesString: string): Scopes[] {
-        const scopesArray: string[] = scopesString.split(' ');
+        const scopesArray: string[] = scopesString.split(" ");
         const enumValues = Object.values(Scopes);
 
         return scopesArray
@@ -51,14 +52,14 @@ export class UserOauth {
     async refresh(refreshToken?: string) {
         if (refreshToken) this.refreshToken = refreshToken;
 
-        if (this.revoked) throw Error(LunifyErrors.TokenRevoked);
-        if (!this.refreshToken) throw Error(LunifyErrors.NoRefreshToken);
+        if (this.revoked) throw new Error(LunifyErrors.TokenRevoked);
+        if (!this.refreshToken) throw new Error(LunifyErrors.NoRefreshToken);
 
         const res = await this.client.oauth.refreshToken(this.refreshToken);
 
         if (!res) {
             this.revoked = true;
-            throw Error(LunifyErrors.TokenRevoked);
+            throw new Error(LunifyErrors.TokenRevoked);
         }
 
         this.accessToken = res.accessToken;
@@ -73,7 +74,7 @@ export class UserOauth {
             await this.refresh();
         }
 
-        return this.tokenType + ' ' + this.accessToken;
+        return this.tokenType + " " + this.accessToken;
     }
 
     /**

@@ -1,8 +1,9 @@
-import { Lunify, PartialPlaylist, PlaylistTrack, UserOauth } from '../..';
-import { ApiEpisode } from '../../../interfaces/episode';
-import { ApiPlaylistTrack } from '../../../interfaces/playlist';
-import { ApiTrack } from '../../../interfaces/track';
-import { CacheManager } from '../cache';
+import type { ApiEpisode } from "../../../interfaces/episode";
+import type { ApiPlaylistTrack } from "../../../interfaces/playlist";
+import type { ApiTrack } from "../../../interfaces/track";
+import type { Lunify, PartialPlaylist, UserOauth } from "../..";
+import { PlaylistTrack } from "../..";
+import { CacheManager } from "../cache";
 
 const FETCH_TRACK_CHUNK_SIZE = 100;
 
@@ -20,17 +21,17 @@ export class PlaylistTracksManager {
     async fetchSinglePage(page: number) {
 
         const params = new URLSearchParams();
-        params.append('limit', FETCH_TRACK_CHUNK_SIZE.toString());
-        params.append('offset', (page * FETCH_TRACK_CHUNK_SIZE).toString() || '0');
+        params.append("limit", FETCH_TRACK_CHUNK_SIZE.toString());
+        params.append("offset", (page * FETCH_TRACK_CHUNK_SIZE).toString() || "0");
 
-        const res = await this.client.rest.get<{ items: ApiPlaylistTrack<ApiTrack | ApiEpisode>[] }>('/playlists/' + this.playlist.id + '/tracks?' + params.toString(), {
+        const res = await this.client.rest.get<{ items: ApiPlaylistTrack<ApiTrack | ApiEpisode>[]; }>("/playlists/" + this.playlist.id + "/tracks?" + params.toString(), {
             headers: {
                 Authorization: await this.oauth.getAuthorization()
             }
         });
 
         const tracks = res.items.map((track) =>
-            track.track.type === 'episode'
+            track.track.type === "episode"
                 ? track.track
                 : new PlaylistTrack(this.client, track as ApiPlaylistTrack<ApiTrack>)
         );

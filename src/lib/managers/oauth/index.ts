@@ -1,7 +1,9 @@
-import { ApiTokenResponse } from '../../../interfaces/oauth';
-import { Lunify, LunifyErrors, RequestDomain, Scopes } from '../..';
-import { UserOauth } from '../../structures/user';
-import { EventEmitter } from 'node:events';
+import { EventEmitter } from "node:events";
+
+import type { ApiTokenResponse } from "../../../interfaces/oauth";
+import type { Lunify, Scopes } from "../..";
+import { LunifyErrors, RequestDomain } from "../..";
+import { UserOauth } from "../../structures/user";
 
 interface OauthEvents {
     /**
@@ -13,8 +15,8 @@ interface OauthEvents {
 
 /* eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging */
 export declare interface OauthManager {
-    on<T extends keyof OauthEvents>(event: T, callback: OauthEvents[T]): this;
-    emit<T extends keyof OauthEvents>(event: T, ...args: Parameters<OauthEvents[T]>): boolean;
+    on: <T extends keyof OauthEvents>(event: T, callback: OauthEvents[T]) => this;
+    emit: <T extends keyof OauthEvents>(event: T, ...args: Parameters<OauthEvents[T]>) => boolean;
 }
 
 /* eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging */
@@ -30,16 +32,17 @@ export class OauthManager extends EventEmitter {
      * @param {?string} state - If you want to use your own state use this
      */
     generateUrl(scopes: Scopes[], state?: string) {
-        if (!this.client.options.oauth.redirectUri) throw Error(LunifyErrors.NoRedirectUri);
+        const redirectUri = this.client.options.oauth?.redirectUri;
+        if (!redirectUri) throw new Error(LunifyErrors.NoRedirectUri);
 
         const params = new URLSearchParams();
-        params.append('response_type', 'code');
-        params.append('client_id', this.client.options.clientId);
-        params.append('redirect_uri', this.client.options.oauth.redirectUri);
-        params.append('scope', scopes.join(' '));
-        params.append('state', state || crypto.randomUUID());
+        params.append("response_type", "code");
+        params.append("client_id", this.client.options.clientId);
+        params.append("redirect_uri", redirectUri);
+        params.append("scope", scopes.join(" "));
+        params.append("state", state || crypto.randomUUID());
 
-        return 'https://accounts.spotify.com/authorize?' + params.toString();
+        return "https://accounts.spotify.com/authorize?" + params.toString();
     }
 
     /**
@@ -51,18 +54,19 @@ export class OauthManager extends EventEmitter {
      * ```
      */
     async fetchToken(code: string) {
-        if (!this.client.options.oauth.redirectUri) throw Error(LunifyErrors.NoRedirectUri);
+        const redirectUri = this.client.options.oauth?.redirectUri;
+        if (!redirectUri) throw new Error(LunifyErrors.NoRedirectUri);
 
         const params = new URLSearchParams();
-        params.append('grant_type', 'authorization_code');
-        params.append('redirect_uri', this.client.options.oauth.redirectUri);
-        params.append('code', code);
+        params.append("grant_type", "authorization_code");
+        params.append("redirect_uri", redirectUri);
+        params.append("code", code);
 
-        const res = await this.client.rest.post<ApiTokenResponse>('/token', {
+        const res = await this.client.rest.post<ApiTokenResponse>("/token", {
             domain: RequestDomain.Accounts,
             authRequired: true,
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                "Content-Type": "application/x-www-form-urlencoded"
             },
             body: params
         });
@@ -82,20 +86,20 @@ export class OauthManager extends EventEmitter {
     async refreshToken(refreshToken: string) {
 
         const params = new URLSearchParams();
-        params.append('grant_type', 'refresh_token');
-        params.append('refresh_token', refreshToken);
+        params.append("grant_type", "refresh_token");
+        params.append("refresh_token", refreshToken);
 
-        const res = await this.client.rest.post<ApiTokenResponse>('/token', {
+        const res = await this.client.rest.post<ApiTokenResponse>("/token", {
             domain: RequestDomain.Accounts,
             authRequired: true,
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                "Content-Type": "application/x-www-form-urlencoded"
             },
             body: params
         });
 
-        if ('message' in res) {
-            throw Error(res.message as string);
+        if ("message" in res) {
+            throw new Error(res.message as string);
         }
 
         // Sometimes, <UserOauth>.refreshToken is null for some reason.
@@ -109,7 +113,7 @@ export class OauthManager extends EventEmitter {
         res.created_timestamp = Date.now();
         const oauth = new UserOauth(this.client, res);
 
-        this.emit('refresh', oauth);
+        this.emit("refresh", oauth);
         return oauth;
     }
 

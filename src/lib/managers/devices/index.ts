@@ -1,12 +1,13 @@
-import { Lunify, Player, PlayerDevice } from '../..';
-import { ApiDevice } from '../../../interfaces/player';
+import type { ApiDevice } from "../../../interfaces/player";
+import type { Lunify, Player } from "../..";
+import { PlayerDevice } from "../..";
 
 export class PlayerDeviceManager {
 
     constructor(
         public client: Lunify,
-        public player: Player,
-    ) { }
+        public player: Player
+    ) {}
 
     /**
      * Fetch all available devices for the user and current playback
@@ -16,7 +17,7 @@ export class PlayerDeviceManager {
      */
     async fetch() {
 
-        const res = await this.client.rest.get<{ devices: ApiDevice[] }>('/me/player/devices', {
+        const res = await this.client.rest.get<{ devices: ApiDevice[]; }>("/me/player/devices", {
             headers: {
                 Authorization: await this.player.user.oauth.getAuthorization()
             }
@@ -38,12 +39,12 @@ export class PlayerDeviceManager {
      */
     async transferPlaybackTo(deviceId: string | string[]) {
 
-        await this.client.rest.put('/me/player', {
+        await this.client.rest.put("/me/player", {
             headers: {
                 Authorization: await this.player.user.oauth.getAuthorization()
             },
             body: {
-                device_ids: typeof deviceId === 'string'
+                device_ids: typeof deviceId === "string"
                     ? [deviceId]
                     : deviceId
             }

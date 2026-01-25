@@ -1,15 +1,16 @@
-import { ApiImage } from '.';
-import { ApiEpisode } from './episode';
-import { ApiTrack } from './track';
+import type { ApiEpisode } from "./episode";
+import type { ApiTrack } from "./track";
+
+import type { ApiImage } from ".";
 
 export interface ApiUserPlaylists {
-  href: string;
-  limit: number;
-  next: string | null;
-  offset: number;
-  previous: string | null;
-  total: number;
-  items: ApiPartialPlaylist[];
+    href: string;
+    limit: number;
+    next: string | null;
+    offset: number;
+    previous: string | null;
+    total: number;
+    items: ApiPartialPlaylist[];
 }
 
 export interface ApiPlaylistOwner {
@@ -20,7 +21,7 @@ export interface ApiPlaylistOwner {
     };
     href: string;
     id: string;
-    type: 'user';
+    type: "user";
     uri: string;
     display_name: string | null;
 }
@@ -37,8 +38,8 @@ export interface ApiPartialPlaylist {
     public: boolean;
     snapshot_id: string;
     tracks: {
-      href: string;
-      total: number;
+        href: string;
+        total: number;
     } | null;
     type: string;
     uri: string;
@@ -48,14 +49,10 @@ export interface ApiPartialPlaylist {
 // export interface ApiPlaylist extends ApiPartialPlaylist {}
 
 export interface ApiPlaylistTrack<T extends ApiTrack | ApiEpisode> {
-    /*
-     * Will only be `null` in very old playlists.
-     */
+    // Will only be `null` in very old playlists.
     added_at: string | null;
-    /*
-     * Will only be `null` in very old playlists.
-     */
-    added_by: Omit<ApiPlaylistOwner, 'display_name'> | null;
+    // Will only be `null` in very old playlists.
+    added_by: Omit<ApiPlaylistOwner, "display_name"> | null;
     is_local: boolean;
     track: T;
 }

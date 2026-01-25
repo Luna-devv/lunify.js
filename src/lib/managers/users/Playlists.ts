@@ -1,14 +1,14 @@
-import { Lunify, PartialUser, User } from '../..';
-import { ApiUserPlaylists } from '../../../interfaces/playlist';
-import { PartialPlaylist } from '../../structures/playlist';
-import { CacheManager } from '../cache';
+import type { ApiUserPlaylists } from "../../../interfaces/playlist";
+import type { Lunify, PartialUser, User } from "../..";
+import { PartialPlaylist } from "../../structures/playlist";
+import { CacheManager } from "../cache";
 
 export class UserPlaylistsManager {
     public cache: CacheManager<string, PartialPlaylist>;
 
     constructor(
         public client: Lunify,
-        public user: PartialUser | User,
+        public user: PartialUser | User
     ) {
         this.cache = new CacheManager();
     }
@@ -16,8 +16,8 @@ export class UserPlaylistsManager {
     async fetch(page?: number) {
 
         const params = new URLSearchParams();
-        params.append('limit', '50');
-        params.append('offset', ((page || 0) * 50).toString() || '0');
+        params.append("limit", "50");
+        params.append("offset", ((page || 0) * 50).toString() || "0");
 
         const res = await this.client.rest.get<ApiUserPlaylists>(`/me/playlists?${params.toString()}`, {
             headers: {

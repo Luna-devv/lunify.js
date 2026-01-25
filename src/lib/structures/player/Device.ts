@@ -1,6 +1,7 @@
-import { Lunify } from '../..';
-import { ApiDevice } from '../../../interfaces/player';
-import { Player } from '.';
+import type { ApiDevice } from "../../../interfaces/player";
+import type { Lunify } from "../..";
+
+import type { Player } from ".";
 
 export class PlayerDevice {
     public id?: string;
@@ -32,7 +33,7 @@ export class PlayerDevice {
      * @returns Whenever the refresh was successfull or not
      */
     async transferPlaybackTo() {
-        if (this.active) return false;
+        if (this.active || !this.id) return false;
 
         await this.player.devices.transferPlaybackTo(this.id);
 

@@ -1,12 +1,13 @@
-import { Readable } from 'node:stream';
-import { RequestDomain } from '../lib';
+import type { Readable } from "node:stream";
+
+import type { RequestDomain } from "../lib";
 
 export interface Options {
     clientId: string;
     clientSecret: string;
     oauth?: {
         redirectUri: string;
-    }
+    };
 }
 
 export interface RequestData {
@@ -49,11 +50,11 @@ export interface RequestData {
 export type RouteLike = string;
 
 export enum RequestMethod {
-    Get = 'GET',
-    Post = 'POST',
-    Put = 'PUT',
-    Patch = 'PATCH',
-    Delete = 'DELETE'
+    Get = "GET",
+    Post = "POST",
+    Put = "PUT",
+    Patch = "PATCH",
+    Delete = "DELETE"
 }
 
 export interface InternalRequest extends RequestData {
@@ -64,7 +65,7 @@ export interface InternalRequest extends RequestData {
 export interface ResponseLike
     extends Pick<
         Response,
-        'arrayBuffer' | 'bodyUsed' | 'headers' | 'json' | 'ok' | 'status' | 'text'
+        "arrayBuffer" | "bodyUsed" | "headers" | "json" | "ok" | "status" | "text"
     > {
     body: Readable | ReadableStream | null;
 }

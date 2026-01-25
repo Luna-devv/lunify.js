@@ -1,4 +1,6 @@
-import { Artist, PartialArtist } from '../structures';
+import type { Artist, PartialArtist } from "../structures";
+
+const MARKDOWN_REGEX = /[!#()*+.[\\]_`{}-]/g;
 
 /**
  * Converts an array of artists to markdown
@@ -10,13 +12,13 @@ export function aristsToMarkdown(artists: (PartialArtist | Artist)[], max?: numb
     const arr = artists.map((artist) => `[${escapeMarkdown(artist.name)}](<https://open.spotify.com/artist/${artist.id}>)`);
 
     if (max && arr.length > max) {
-        const shownArists = arr.slice(0, max).join(', ');
+        const shownArists = arr.slice(0, max).join(", ");
         const remainingCount = Math.max(0, arr.length - max);
 
         return `${shownArists} & ${remainingCount} more`;
     }
 
-    return arr.join(', ');
+    return arr.join(", ");
 }
 
 /**
@@ -25,7 +27,6 @@ export function aristsToMarkdown(artists: (PartialArtist | Artist)[], max?: numb
  * @returns Markdown escaped string
  */
 export function escapeMarkdown(input: string): string {
-    const markdownCharacters = /\\|`|\*|_|{|}|\[|\]|\(|\)|#|\+|-|\.|!/g;
-    const escapedInput = input.replace(markdownCharacters, '\\$&');
+    const escapedInput = input.replace(MARKDOWN_REGEX, "\\$&");
     return escapedInput;
 }

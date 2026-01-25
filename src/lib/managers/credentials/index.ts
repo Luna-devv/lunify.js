@@ -1,5 +1,6 @@
-import { Lunify, RequestDomain } from '../..';
-import { ApiCredentialsResponse } from '../../../interfaces/oauth';
+import type { ApiCredentialsResponse } from "../../../interfaces/oauth";
+import type { Lunify } from "../..";
+import { RequestDomain } from "../..";
 
 export class CredentialsManager {
     public accessToken?: string;
@@ -18,15 +19,15 @@ export class CredentialsManager {
      */
     async fetch() {
         const params = new URLSearchParams();
-        params.append('grant_type', 'client_credentials');
-        params.append('client_id', this.client.options.clientId);
-        params.append('client_secret', this.client.options.clientSecret);
+        params.append("grant_type", "client_credentials");
+        params.append("client_id", this.client.options.clientId);
+        params.append("client_secret", this.client.options.clientSecret);
 
-        const res = await this.client.rest.post<ApiCredentialsResponse>('/token', {
+        const res = await this.client.rest.post<ApiCredentialsResponse>("/token", {
             domain: RequestDomain.Accounts,
             authRequired: true,
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                "Content-Type": "application/x-www-form-urlencoded"
             },
             body: params
         });
@@ -35,8 +36,8 @@ export class CredentialsManager {
 
         this.accessToken = res.access_token;
         this.tokenType = res.token_type;
-        this.expiresIn = res.expires_in * 1000;
-        this.expiresTimestamp = res.created_timestamp + res.expires_in * 1000;
+        this.expiresIn = res.expires_in * 1_000;
+        this.expiresTimestamp = res.created_timestamp + res.expires_in * 1_000;
         this.createdTimestamp = res.created_timestamp;
 
         return this;
@@ -49,12 +50,13 @@ export class CredentialsManager {
 
         if (
             !this.accessToken ||
+            !this.expiresTimestamp ||
             this.expiresTimestamp < Date.now()
         ) {
             this.accessToken = (await this.fetch()).accessToken;
         }
 
-        return this.tokenType + ' ' + this.accessToken;
+        return this.tokenType + " " + this.accessToken;
     }
 
 }

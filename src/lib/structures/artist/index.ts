@@ -1,17 +1,17 @@
-import { Lunify } from '../..';
-import { ApiArtist, ApiPartialArtist } from '../../../interfaces/artist';
+import type { ApiArtist, ApiPartialArtist } from "../../../interfaces/artist";
+import type { Lunify } from "../..";
 
 export class PartialArtist {
     public externalUrls: Record<string, string>;
     public url: string;
     public id: string;
     public name: string;
-    public type: ApiPartialArtist['type'];
+    public type: ApiPartialArtist["type"];
     public uri: string;
 
     constructor(
         public client: Lunify,
-        data?: ApiPartialArtist
+        data: ApiPartialArtist
     ) {
         this.externalUrls = data.external_urls;
         this.url = data.href;
@@ -29,12 +29,12 @@ export class Artist extends PartialArtist {
         total: number;
     };
     public genres: string[];
-    public images: ApiArtist['images'];
+    public images: ApiArtist["images"];
     public popularity: number;
 
     constructor(
         public client: Lunify,
-        data?: ApiArtist
+        data: ApiArtist
     ) {
         super(client, data);
 

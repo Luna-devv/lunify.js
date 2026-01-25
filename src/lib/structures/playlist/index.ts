@@ -1,7 +1,7 @@
-import { Lunify, UserOauth } from '../..';
-import { ApiImage } from '../../../interfaces';
-import { ApiPartialPlaylist, ApiPlaylistOwner } from '../../../interfaces/playlist';
-import { PlaylistTracksManager } from '../../managers/playlists/Tracks';
+import type { ApiImage } from "../../../interfaces";
+import type { ApiPartialPlaylist, ApiPlaylistOwner } from "../../../interfaces/playlist";
+import type { Lunify, UserOauth } from "../..";
+import { PlaylistTracksManager } from "../../managers/playlists/Tracks";
 
 export class PartialPlaylist {
     public tracks: PlaylistTracksManager;
