@@ -2,8 +2,24 @@ import { Lunify, LunifyErrors, RequestDomain, userAgent } from '../..';
 import { InternalRequest, RequestData, RequestMethod, ResponseLike, RouteLike } from '../../../interfaces/rest';
 
 export class RestManager {
+    public basicAuthorization: string | null;
 
-    constructor(public client: Lunify) { }
+    constructor(public client?: Lunify) {
+        this.basicAuthorization = null;
+
+        if (client) {
+            this.basicAuthorization = this.makeSecretString(client.options.clientId, client.options.clientSecret);
+        }
+    }
+
+    private makeSecretString(clientId: string, clientSecret: string) {
+        return 'Basic ' + Buffer.from(clientId + ':' + clientSecret).toString('base64');
+    }
+
+    setBasicAuthorization(clientId: string, clientSecret: string) {
+        this.basicAuthorization = this.makeSecretString(clientId, clientSecret);
+        return this;
+    }
 
     private resolveUrl(domain: RequestDomain, route: RouteLike, query?: string): string {
         return `${domain || RequestDomain.Api}${route}${query ? `?${query}` : ''}`;
@@ -22,10 +38,12 @@ export class RestManager {
         } as Record<string, string>;
 
         if (request.authRequired) {
-            headers.Authorization = 'Basic ' + Buffer.from(this.client.options.clientId + ':' + this.client.options.clientSecret).toString('base64');
+            if (!this.basicAuthorization) throw Error(LunifyErrors.RequireBasicAuth);
+            headers.Authorization = this.basicAuthorization;
         }
 
         if (request.advancedAuthRequired) {
+            if (!this.client) throw Error(LunifyErrors.RequireAdvancedAuth);
             headers.Authorization = await this.client.credentials.getAuthorization();
         }
 

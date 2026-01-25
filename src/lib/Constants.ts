@@ -34,7 +34,9 @@ export enum LunifyErrors {
     TokenRevoked = 'User refresh token was revoked',
     NoRefreshToken = 'No refresh token was provided to refresh users access token',
     NoRedirectUri = 'No redirect uri was provided to manage oauth2 authorization, https://github.com/Luna-devv/lunify.js#initiate-lunifyjs',
-    ClientNotReady = 'Request "![[PATH]]" failed: client was not ready, https://github.com/Luna-devv/lunify.js#example'
+    ClientNotReady = 'Request "![[PATH]]" failed: client was not ready, https://github.com/Luna-devv/lunify.js#example',
+    RequireBasicAuth = 'No basicAuthorization was set, please use RestManger#setBasicAuthorization or pass Lunify into new RestManager(api)',
+    RequireAdvancedAuth = 'No Lunify instance was provided for advanced authorization at new RestManager()'
 }
 
 export const userAgent = 'Lunify.js (https://github.com/Luna-devv/lunify.js)' as const;
