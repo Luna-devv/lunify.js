@@ -1,10 +1,28 @@
 import { ApiTokenResponse } from '../../../interfaces/oauth';
 import { Lunify, LunifyErrors, RequestDomain, Scopes } from '../..';
 import { UserOauth } from '../../structures/user';
+import { EventEmitter } from 'node:events';
 
-export class OauthManager {
+interface OauthEvents {
+    /**
+     * Emitted when a oauth token is refreshed.
+     * @event OauthManager#refresh
+     */
+    refresh: (oauth: UserOauth) => void;
+}
 
-    constructor(public client: Lunify) {}
+/* eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging */
+export declare interface OauthManager {
+    on<T extends keyof OauthEvents>(event: T, callback: OauthEvents[T]): this;
+    emit<T extends keyof OauthEvents>(event: T, ...args: Parameters<OauthEvents[T]>): boolean;
+}
+
+/* eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging */
+export class OauthManager extends EventEmitter {
+
+    constructor(public client: Lunify) {
+        super();
+    }
 
     /**
      * Create a oAuth url for users to authorize
@@ -89,7 +107,10 @@ export class OauthManager {
         res.refresh_token ||= refreshToken;
 
         res.created_timestamp = Date.now();
-        return new UserOauth(this.client, res);
+        const oauth = new UserOauth(this.client, res);
+
+        this.emit('refresh', oauth);
+        return oauth;
     }
 
 }
