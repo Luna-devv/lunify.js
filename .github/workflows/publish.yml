@@ -1,0 +1,52 @@
+name: Publish Package to npmjs
+
+on:
+    push:
+        branches: [main]
+
+permissions:
+    id-token: write
+    contents: read
+
+jobs:
+    publish:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v6
+              with:
+                  fetch-depth: 0
+
+            - name: Check if package version changed
+              id: check_publish
+              run: |
+                  current_version=$(node -p "require('./package.json').version")
+                  npm_package_name=$(node -p "require('./package.json').name")
+                  published_version=$(npm show $npm_package_name version) || echo "0.0.0"
+
+                  echo "Current version: $current_version"
+                  echo "Published version: $published_version"
+
+                  if [ "$current_version" == "$published_version" ]; then
+                      echo "No new version. Skipping publish."
+                      echo "publish=false" >> $GITHUB_ENV
+                  else
+                      echo "New version available. Proceeding to publish."
+                      echo "publish=true" >> $GITHUB_ENV
+                  fi
+
+            - uses: pnpm/action-setup@v4
+              with:
+                version: 10
+                cache: true
+
+            - run: pnpm install
+            - run: pnpm run build
+
+            - uses: actions/setup-node@v6
+              if: env.publish == 'true'
+              with:
+                  node-version: "latest"
+                  registry-url: "https://registry.npmjs.org"
+
+            - run: npm publish --provenance --access public
+              if: env.publish == 'true'
