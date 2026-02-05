@@ -5,7 +5,7 @@ import { PartialAlbum } from "../album";
 import { PartialArtist } from "../artist";
 
 export class PartialTrack {
-    public album: PartialAlbum;
+    public album?: PartialAlbum;
     public artists: PartialArtist[];
     public markets: string[];
     public disc: number;

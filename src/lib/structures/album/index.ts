@@ -31,6 +31,7 @@ export class PartialAlbum {
         this.images = data.images;
         this.name = data.name;
         this.release = new Date(data.release_date);
+        this.releasePrecision = data.release_date_precision;
         this.restrictions = data.restrictions?.reason || null;
         this.type = data.album_type;
         this.uri = data.uri;

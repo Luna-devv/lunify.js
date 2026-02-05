@@ -1,18 +1,34 @@
 {
     "compilerOptions": {
-        "module": "CommonJS",
         "target": "ES2024",
-        "sourceMap": true,
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "lib": [
+            "ES2024",
+            "dom"
+        ],
         "outDir": "./dist",
-        "noImplicitAny": true,
-        "declaration": true,
+        "rootDir": "./src",
+        "strict": true,
         "esModuleInterop": true,
-        "strictNullChecks": true
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "declaration": true,
+        "declarationMap": true,
+        "sourceMap": true,
+        "removeComments": false,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "exactOptionalPropertyTypes": false,
+        "noUncheckedIndexedAccess": true
     },
     "include": [
         "src/**/*"
     ],
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "dist"
     ]
 }
