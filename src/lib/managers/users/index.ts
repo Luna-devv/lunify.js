@@ -26,11 +26,8 @@ export class UsersManager {
      * ```
      */
     async fetch(access: UserOauth, options?: { force: boolean; }) {
-        let user: User | undefined;
-
         if (!options?.force) {
-            // not sure if there is a better way
-            user = this.cache.find((u) => u.oauth.refreshToken === access.refreshToken);
+            const user = this.cache.find((u) => u.oauth.refreshToken === access.refreshToken);
             if (user) return user;
         }
 
@@ -40,7 +37,7 @@ export class UsersManager {
             }
         });
 
-        user = new User(this.client, access, res);
+        const user = new User(this.client, access, res);
         this.cache.set(user.id, user);
 
         return user;
